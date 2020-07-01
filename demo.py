@@ -21,6 +21,7 @@ import argparse
 import csv
 import logging
 import os
+import time
 import random
 import sys
 import codecs
@@ -52,10 +53,10 @@ from transformers.optimization import AdamW
 from preprocess_yahoo import evaluate_Yahoo_zeroshot_TwpPhasePred
 # import torch.optim as optimizer_wenpeng
 
-logging.basicConfig(format = '%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
-                    datefmt = '%m/%d/%Y %H:%M:%S',
-                    level = logging.INFO)
-logger = logging.getLogger(__name__)
+# logging.basicConfig(format = '%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
+#                     datefmt = '%m/%d/%Y %H:%M:%S',
+#                     level = logging.INFO)
+# logger = logging.getLogger(__name__)
 
 
 type2hypothesis = {
@@ -323,8 +324,8 @@ def convert_examples_to_features(examples, label_list, max_seq_length,
 
     features = []
     for (ex_index, example) in enumerate(examples):
-        if ex_index % 10000 == 0:
-            logger.info("Writing example %d of %d" % (ex_index, len(examples)))
+        # if ex_index % 10000 == 0:
+        #     logger.info("Writing example %d of %d" % (ex_index, len(examples)))
 
         tokens_a = premise_2_tokenzed.get(example.text_a)
         if tokens_a is None:
@@ -386,16 +387,16 @@ def convert_examples_to_features(examples, label_list, max_seq_length,
         else:
             raise KeyError(output_mode)
 
-        if ex_index < 5:
-            logger.info("*** Example ***")
-            logger.info("guid: %s" % (example.guid))
-            logger.info("tokens: %s" % " ".join(
-                    [str(x) for x in tokens]))
-            logger.info("input_ids: %s" % " ".join([str(x) for x in input_ids]))
-            logger.info("input_mask: %s" % " ".join([str(x) for x in input_mask]))
-            logger.info(
-                    "segment_ids: %s" % " ".join([str(x) for x in segment_ids]))
-            logger.info("label: %s (id = %d)" % (example.label, label_id))
+        # if ex_index < 5:
+        #     logger.info("*** Example ***")
+        #     logger.info("guid: %s" % (example.guid))
+        #     logger.info("tokens: %s" % " ".join(
+        #             [str(x) for x in tokens]))
+        #     logger.info("input_ids: %s" % " ".join([str(x) for x in input_ids]))
+        #     logger.info("input_mask: %s" % " ".join([str(x) for x in input_mask]))
+        #     logger.info(
+        #             "segment_ids: %s" % " ".join([str(x) for x in segment_ids]))
+        #     logger.info("label: %s (id = %d)" % (example.label, label_id))
 
         features.append(
                 InputFeatures(input_ids=input_ids,
@@ -474,8 +475,48 @@ def compute_metrics(task_name, preds, labels):
     else:
         raise KeyError(task_name)
 
+def load_model(model_name):
+    processors = {
+        "rte": RteProcessor
+    }
 
-def main(premise_str, hypo_list):
+    output_modes = {
+        "rte": "classification"
+    }
+    # task_name = args.task_name.lower()
+    task_name = 'rte'
+    if task_name not in processors:
+        raise ValueError("Task not found: %s" % (task_name))
+
+    processor = processors[task_name]()
+    output_mode = output_modes[task_name]
+
+    label_list = processor.get_labels()  # [0,1]
+    num_labels = len(label_list)
+    # pretrain_model_dir = '/Users/yangjinrui/Documents/upenn/0shot/BenchmarkingZeroShot/models/FineTuneOn{}'.format(model_name)
+    pretrain_model_dir = 'please enter your pretrain models path here/FineTuneOn{}'.format(model_name)
+    # Prepare model
+    # cache_dir = os.path.join(str(PYTORCH_TRANSFORMERS_CACHE), '{} model distributed_{}'.format(model_name, -1))
+    # # cache_dir = os.path.join(str(PYTORCH_TRANSFORMERS_CACHE), '{} model distributed_{}'.format(model_name, -1))
+
+
+    model = BertForSequenceClassification.from_pretrained(pretrain_model_dir, num_labels=num_labels)
+    tokenizer = BertTokenizer.from_pretrained(pretrain_model_dir)
+    # model = BertForSequenceClassification.from_pretrained('bert-base-uncased',
+    #           cache_dir=cache_dir,
+    #           num_labels=num_labels)
+    # tokenizer = BertTokenizer.from_pretrained('bert-base-uncased', do_lower_case=True)
+
+    return model, tokenizer
+
+def load_model_to_mem():
+    cache = {}
+    for model_name in ["MNLI", "FEVER", "RTE"]:
+        model, tokenizer = load_model(model_name)
+        cache[model_name] = (model, tokenizer)
+    return cache
+
+def compute_single_label(premise_str, hypo_list, model, tokenizer):
     parser = argparse.ArgumentParser()
 
     ## Required parameters
@@ -567,8 +608,8 @@ def main(premise_str, hypo_list):
         n_gpu = 1
         # Initializes the distributed backend which will take care of sychronizing nodes/GPUs
         torch.distributed.init_process_group(backend='nccl')
-    logger.info("device: {} n_gpu: {}, distributed training: {}, 16-bits training: {}".format(
-        device, n_gpu, bool(args.local_rank != -1), args.fp16))
+    # logger.info("device: {} n_gpu: {}, distributed training: {}, 16-bits training: {}".format(
+    #     device, n_gpu, bool(args.local_rank != -1), args.fp16))
 
     if args.gradient_accumulation_steps < 1:
         raise ValueError("Invalid gradient_accumulation_steps parameter: {}, should be >= 1".format(
@@ -606,9 +647,11 @@ def main(premise_str, hypo_list):
     #           num_labels=num_labels)
     # tokenizer = BertTokenizer.from_pretrained(args.bert_model, do_lower_case=args.do_lower_case)
 
-    pretrain_model_dir = '/Users/yangjinrui/Documents/upenn/0shot/BenchmarkingZeroShot/Dataset/FineTuneOnRTE' #FineTuneOnCombined'# FineTuneOnMNLI
-    model = BertForSequenceClassification.from_pretrained(pretrain_model_dir, num_labels=num_labels)
-    tokenizer = BertTokenizer.from_pretrained(pretrain_model_dir)
+    pretrain_model_dir = '/Users/yangjinrui/Documents/upenn/0shot/BenchmarkingZeroShot/Dataset/FineTuneOn{}'.format(model) #FineTuneOnCombined'# FineTuneOnMNLI
+    # # pretrain_model_dir = 'https://zeroshotdemo.s3-us-west-1.amazonaws.com/FineTuneOnRTE'
+    # # pretrain_model_dir = "https://drive.google.com/drive/folders/1SdPZ0dc6T3akDmVwTQeTmJS4mJKNXHeo?usp=sharing"
+    # model = BertForSequenceClassification.from_pretrained(pretrain_model_dir, num_labels=num_labels)
+    # tokenizer = BertTokenizer.from_pretrained(pretrain_model_dir)
 
     model.to(device)
 
@@ -656,9 +699,9 @@ def main(premise_str, hypo_list):
     '''
     model.eval()
 
-    logger.info("***** Running testing *****")
-    logger.info("  Num examples = %d", len(test_examples))
-    logger.info("  Batch size = %d", args.eval_batch_size)
+    # logger.info("***** Running testing *****")
+    # logger.info("  Num examples = %d", len(test_examples))
+    # logger.info("  Batch size = %d", args.eval_batch_size)
 
     test_loss = 0
     nb_test_steps = 0
@@ -682,9 +725,27 @@ def main(premise_str, hypo_list):
     preds = preds[0]
     pred_probs = softmax(preds,axis=1)[:,0]
     return max(pred_probs)
+
+# def compute_single_label(premise_str, label, model_name):
+#     model, tokenizer = load_model(model_name)
+#     prob_dic = {}
+#     for label in label_list:
+#         prob_dic[label] = compute_single_label(premise_str, label, model, tokenizer)
+#     return prob_dic
+
+def compute_mutiple_labels(premise_str, label_list, model, tokenizer):
+    prob_dic = {}
+    for label in label_list:
+        prob_dic[label] = compute_single_label(premise_str, label, model, tokenizer)
+    return prob_dic
+
+
+
 if __name__ == "__main__":
-    prob = main()
-    print('prob:', prob)
+    start_time = time.time()
+    prob = compute_mutiple_labels('Metricsdetails  The past decade has allowed the development of a multitude of digital tools. Now they can be used to remediate the COVID-19 outbreak.  The year 2020 should have been the start of an exciting decade in medicine and science, with the development and maturation of several digital technologies that can be applied to tackle major clinical problems and diseases. These digital technologies include the internet of things (IoT) with next-generation telecommunication networks (e.g., 5G)1,2; big-data analytics3; artificial intelligence (AI) that uses deep learning4,5; and blockchain technology6. They are highly inter-related: the proliferation of the IoT (e.g., devices and instruments) in hospitals and clinics facilitates the establishment of a highly interconnected digital ecosystem, enabling real-time data collection at scale, which could then be used by AI and deep learning systems to understand healthcare trends, model risk associations and ', ['anger',  'this text expresses anger', 'the guy is very unhappy', ' Political Implications', 'foreign policy', 'Europe', 'the guy is very unhappy', ' Political Implications', 'foreign policy', 'Europe', 'anger',  'this text expresses anger', 'the guy is very unhappy', ' Political Implications', 'foreign policy', 'Europe', 'the guy is very unhappy', ' Political Implications', 'foreign policy', 'Europe'], 'MNLI')
+    print('prob_list:', prob)
+    print("Response time:{:0.4f}s".format(time.time() - start_time))
 
     '''
     CUDA_VISIBLE_DEVICES=7 python -u demo.py --premise_str 'fuck why my email not come yet' --hypo_list 'anger | this text expresses anger | the guy is very unhappy'
