@@ -1,18 +1,9 @@
 import cherrypy
-from zeroshot_classification import ZeroshotClassification
 import json
 from demo import load_model, compute_single_label, load_model_to_mem, compute_mutiple_labels
 
 print("")
 print("Loading classifer...")
-# mnli_classifer = ZeroshotClassification._get_mnli()
-# # verb_srl_manager = verb_srl._PredictManager(verb_srl_predictor)
-# print(":FEVER")
-# fever_classifer = ZeroshotClassification._get_fever()
-# # nom_srl_manager = nom_srl._PredictManager(nom_srl_predictor)
-# print(":RTE")
-# rte_classifer = ZeroshotClassification._get_rte()
-# onto_nom_srl_manager = onto_nom_srl._PredictManager(onto_nom_srl_predictor)
 global cache
 cache = load_model_to_mem()
 print("Cached models!")
@@ -28,7 +19,6 @@ class MyWebService(object):
         model_list = data["models"]
         label_list= data["labels"]
         all_dic = {}
-        # prob = compute_single_label(input_text, label, model, tokenizer)
         for model_name in model_list:
             model = cache[model_name][0]
             tokenizer = cache[model_name][1]
