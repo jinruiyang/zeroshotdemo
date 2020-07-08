@@ -31,23 +31,39 @@ class StringPredicter(object):
     def predict(self):
         cherrypy.response.headers['Content-Type'] = 'application/json'
         data = cherrypy.request.json
-        input_text = data["text"]
         # model_list = ["MNLI", "FEVER", "RTE"]  # FIXED !
-        model_list = data["models"]
-        label_list = data["labels"]
-        result = {}
-        for model_name in model_list:
-            model = cache[model_name][0]
-            tokenizer = cache[model_name][1]
-            prob_list = compute_mutiple_labels(input_text, label_list, model, tokenizer)
-            # prob_list = compute_single_label(text, label, model, tokenizer)
-            # this is required to fix serialization issues with np.float32
-            for key in prob_list:
-                prob_list[key] = 1. * prob_list[key]
-            result[model_name] = prob_list
-        cherrypy.session['result'] = result
 
-        return json.dumps(result)
+        result = {
+            "text": data["text"],
+            "labels": data["labels"],
+            "models": data["models"],
+            "json_result": {},
+            "chart_result": []
+
+        }
+
+        # for model_name in data["models"]:
+        #     model = cache[model_name][0]
+        #     tokenizer = cache[model_name][1]
+        #     prob_list = compute_mutiple_labels(data["text"], data["labels"], model, tokenizer)
+        #     # prob_list = compute_single_label(text, label, model, tokenizer)
+        #     # this is required to fix serialization issues with np.float32
+        #     for key in prob_list:
+        #         prob_list[key] = round((100. * prob_list[key]), 2)
+        #     result["json_result"][model_name] = prob_list
+        cherrypy.session['result'] = result
+        for label in data["labels"]:
+            each_label_result = {"label": label, 'Average': 0.}
+            for model_name in data["models"]:
+                model = cache[model_name][0]
+                tokenizer = cache[model_name][1]
+                each_label_result[model_name] = round((100. * compute_single_label(data['text'], label, model, tokenizer)), 3)
+                each_label_result['Average'] += each_label_result[model_name]
+            each_label_result['Average'] = round((each_label_result['Average'] / len(data["models"])),3 )
+            result["chart_result"].append(each_label_result)
+        result["chart_result"] = sorted(result["chart_result"], key= lambda i: i['Average'])
+        return result["chart_result"]
+        # return json.dumps(result["chart_result"])
 
 
 if __name__ == '__main__':
