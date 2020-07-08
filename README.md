@@ -4,10 +4,14 @@ Step 1: To download the wikipedia data and three pretrained entailment models (R
 
 Step 2: Pls put your model path to Line497 in demo.py 
 
-Step 3: 
+Step 3 : 
 
 $python3 backend_cherry.py
 
-then in another termianl tab enter:
+then in another termianl tab enter, you can Check backend with terminal:
 
 curl -d '{"text":"The fox jumped over the fence, and the fence fell down.","models":["MNLI","FEVER"],"labels":["Society", "Health", "Sports"]}' -H 'Content-Type: application/json' -X POST http://localhost:8081/predict
+
+Step 4:
+ 
+Open url http://localhost:8081/ in the browser, then you can play with it!
