@@ -7,7 +7,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="https://cogcomp.seas.upenn.edu/images/ccg.ico" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="css/0shot.css">
-    <script src="echarts.min.js"></script>
+    <script src="js/echarts.min.js"></script>
     <style>
 
     </style>
@@ -48,11 +48,11 @@
           <button class="btn" style="border-left:1px solid navy">
             <i class="fa fa-caret-down"></i>
           </button>
-          <div class="dropdown-content">
+          <div class="dropdown-content" id="buttonText">
             <a href="#">When is Thanksgiving celebrated in Canada?</a>
-            <a href="#">The Christian Music field .</a>
+            <a href="#">The Christian Music field.</a>
             <a href="#">In the US , the threshold for gold is half a million.</a>
-            <a href="#">Sometimes I can't even believe my life... sometimes.</a>
+            <a href="#">Sometimes I can't even believe my life.</a>
           </div>
         </div>
         </div>
@@ -69,8 +69,8 @@
           <button class="btn" style="border-left:1px solid navy">
             <i class="fa fa-caret-down"></i>
           </button>
-          <div class="dropdown-content">
-            <button  id="buttonLabel1">Topicsssss</button>
+          <div class="dropdown-content" id="buttonLabel">
+            <a  href="#">Topic</a>
             <a href="#" >Emotion</a>
             <a href="#">Situation</a>
             <a href="#" >Covid-19</a>
@@ -88,10 +88,10 @@
         </div>
 
         <div id="center">
-            <input type="text" id="label1" name="labels" placeholder="Label 1" value="sadness"><br>
-            <input type="text" id="label2" name="labels" placeholder="Label 2" value="happy"><br>
-            <input type="text" id="label3" name="labels" placeholder="Label 3" value="sports"><br>
-            <input type="text" id="label4" name="labels" placeholder="Label 4" value=""><br>
+            <input type="text" id="label" name="labels" placeholder="Label 1" value="health"><br>
+            <input type="text" id="label" name="labels" placeholder="Label 2" value="happy"><br>
+            <input type="text" id="label" name="labels" placeholder="Label 3" value="sports"><br>
+            <input type="text" id="label" name="labels" placeholder="Label 4" value=""><br>
             <input type="text" id="label" name="labels" placeholder="Label 5" value=""><br>
             <input type="text" id="label" name="labels" placeholder="Label 6" value=""><br>
             <input type="text" id="label" name="labels" placeholder="Label 7" value=""><br>
@@ -139,14 +139,13 @@
         <button id="btn2">Clear</button>
     </div>
 
-    <!--TODO 0 check response -->
     <div id="result-header">
         <p>This is result:
          </p>
     </div>
-        <div id="result" >
+    <div id="result" ></div>
 
-    </div>
+    <div id="result-chart" style="width: 800px;height:600px;"></div>
 
 </div>
 
@@ -156,33 +155,6 @@
 <!--<script src="jquery.serialize-object.min.js"></script>-->
 <script src="js/predict.js"></script>
 
-<script type="text/javascript">
-        // based on prepared DOM, initialize echarts instance
-        // var myChart = echarts.init(document.getElementById('main'));
-        //
-        // // specify chart configuration item and data
-        // var option = {
-        //     title: {
-        //         text: 'ECharts entry example'
-        //     },
-        //     tooltip: {},
-        //     legend: {
-        //         data:['Sales']
-        //     },
-        //     xAxis: {
-        //         data: ["shirt","cardign","chiffon shirt","pants","heels","socks"]
-        //     },
-        //     yAxis: {},
-        //     series: [{
-        //         name: 'Sales',
-        //         type: 'bar',
-        //         data: [5, 20, 36, 10, 10, 20]
-        //     }]
-        // };
-
-        // use configuration item and data specified to show chart
-        // myChart.setOption(option);
-    </script>
 <script>
 
 </script>
