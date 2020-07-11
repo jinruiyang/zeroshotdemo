@@ -80,11 +80,12 @@ if __name__ == '__main__':
         '/css':
             {'tools.staticdir.on': True,
              'tools.staticdir.dir': "./public/css"
-        },
+             },
         '/js':
             {'tools.staticdir.on': True,
              'tools.staticdir.dir': "./public/js"
-             }
+             },
+
     }
     print("Starting rest service...")
     config = {'server.socket_host': '0.0.0.0'}
