@@ -22,6 +22,7 @@ import csv
 import logging
 import os
 import time
+import line_profiler
 import random
 import sys
 import codecs
@@ -493,8 +494,8 @@ def load_model(model_name):
 
     label_list = processor.get_labels()  # [0,1]
     num_labels = len(label_list)
-    # pretrain_model_dir = '/Users/yangjinrui/Documents/upenn/0shot/BenchmarkingZeroShot/models/FineTuneOn{}'.format(model_name)
-    pretrain_model_dir = 'please enter your pretrain models path here/FineTuneOn{}'.format(model_name)
+    pretrain_model_dir = '/Users/yangjinrui/Documents/upenn/0shot/BenchmarkingZeroShot/models/FineTuneOn{}'.format(model_name)
+    # pretrain_model_dir = 'please enter your pretrain models path here/FineTuneOn{}'.format(model_name)
     # Prepare model
     # cache_dir = os.path.join(str(PYTORCH_TRANSFORMERS_CACHE), '{} model distributed_{}'.format(model_name, -1))
     # # cache_dir = os.path.join(str(PYTORCH_TRANSFORMERS_CACHE), '{} model distributed_{}'.format(model_name, -1))
@@ -506,7 +507,7 @@ def load_model(model_name):
     #           cache_dir=cache_dir,
     #           num_labels=num_labels)
     # tokenizer = BertTokenizer.from_pretrained('bert-base-uncased', do_lower_case=True)
-
+    # print(tokenizer)
     return model, tokenizer
 
 def load_model_to_mem():
@@ -516,7 +517,11 @@ def load_model_to_mem():
         cache[model_name] = (model, tokenizer)
     return cache
 
-def compute_single_label(premise_str, hypo_list, model, tokenizer):
+def convert_test_feature():
+    pass
+
+
+def compute_single_label(test_examples, model, tokenizer):
     parser = argparse.ArgumentParser()
 
     ## Required parameters
@@ -598,47 +603,51 @@ def compute_single_label(premise_str, hypo_list, model, tokenizer):
     output_modes = {
         "rte": "classification"
     }
-
-    if args.local_rank == -1 or args.no_cuda:
-        device = torch.device("cuda" if torch.cuda.is_available() and not args.no_cuda else "cpu")
-        n_gpu = torch.cuda.device_count()
-    else:
-        torch.cuda.set_device(args.local_rank)
-        device = torch.device("cuda", args.local_rank)
-        n_gpu = 1
-        # Initializes the distributed backend which will take care of sychronizing nodes/GPUs
-        torch.distributed.init_process_group(backend='nccl')
+    device = torch.device("cpu")
+    # if args.local_rank == -1 or args.no_cuda:
+    #     device = torch.device("cuda" if torch.cuda.is_available() and not args.no_cuda else "cpu")
+    #     n_gpu = torch.cuda.device_count()
+    # else:
+    #     torch.cuda.set_device(args.local_rank)
+    #     device = torch.device("cuda", args.local_rank)
+    #     n_gpu = 1
+    #     # Initializes the distributed backend which will take care of sychronizing nodes/GPUs
+    #     torch.distributed.init_process_group(backend='nccl')
     # logger.info("device: {} n_gpu: {}, distributed training: {}, 16-bits training: {}".format(
     #     device, n_gpu, bool(args.local_rank != -1), args.fp16))
 
-    if args.gradient_accumulation_steps < 1:
-        raise ValueError("Invalid gradient_accumulation_steps parameter: {}, should be >= 1".format(
-                            args.gradient_accumulation_steps))
-
-    args.train_batch_size = args.train_batch_size // args.gradient_accumulation_steps
+    # if args.gradient_accumulation_steps < 1:
+    #     raise ValueError("Invalid gradient_accumulation_steps parameter: {}, should be >= 1".format(
+    #                         args.gradient_accumulation_steps))
+    #
+    # args.train_batch_size = args.train_batch_size // args.gradient_accumulation_steps
 
     random.seed(args.seed)
     np.random.seed(args.seed)
     torch.manual_seed(args.seed)
-    if n_gpu > 0:
-        torch.cuda.manual_seed_all(args.seed)
+    # if n_gpu > 0:
+    #     torch.cuda.manual_seed_all(args.seed)
 
 
 
-    task_name = args.task_name.lower()
+    # task_name = args.task_name.lower()
 
-    if task_name not in processors:
-        raise ValueError("Task not found: %s" % (task_name))
+    # if task_name not in processors:
+    #     raise ValueError("Task not found: %s" % (task_name))
 
-    processor = processors[task_name]()
-    output_mode = output_modes[task_name]
-
-    label_list = processor.get_labels() #[0,1]
-    num_labels = len(label_list)
+    # processor = processors[task_name]()
+    # output_mode = output_modes[task_name]
 
 
+    # label_list = processor.get_labels() #[0,1]
 
-    train_examples = None
+    output_mode = output_modes["rte"]
+    label_list = processors["rte"]().get_labels()
+    # num_labels = len(label_list)
+
+
+
+    # train_examples = None
 
     # Prepare model
     # cache_dir = args.cache_dir if args.cache_dir else os.path.join(str(PYTORCH_TRANSFORMERS_CACHE), 'distributed_{}'.format(args.local_rank))
@@ -655,8 +664,8 @@ def compute_single_label(premise_str, hypo_list, model, tokenizer):
 
     model.to(device)
 
-    if n_gpu > 1:
-        model = torch.nn.DataParallel(model)
+    # if n_gpu > 1:
+    #     model = torch.nn.DataParallel(model)
 
     # Prepare optimizer
     # param_optimizer = list(model.named_parameters())
@@ -667,21 +676,21 @@ def compute_single_label(premise_str, hypo_list, model, tokenizer):
     #     ]
     # optimizer = AdamW(optimizer_grouped_parameters,
     #                          lr=args.learning_rate)
-    global_step = 0
-    nb_tr_steps = 0
-    tr_loss = 0
-    max_test_unseen_acc = 0.0
-    max_dev_unseen_acc = 0.0
-    max_dev_seen_acc = 0.0
-    max_overall_acc = 0.0
+    # global_step = 0
+    # nb_tr_steps = 0
+    # tr_loss = 0
+    # max_test_unseen_acc = 0.0
+    # max_dev_unseen_acc = 0.0
+    # max_dev_seen_acc = 0.0
+    # max_overall_acc = 0.0
     '''load test set'''
 
 
-    seen_types = set()
+    # seen_types = set()
     # test_examples, test_label_list, test_hypo_seen_str_indicator, test_hypo_2_type_index = processor.get_examples_Yahoo_test('/export/home/Dataset/YahooClassification/yahoo_answers_csv/zero-shot-split/test.txt', seen_types)
     # test_examples = load_demo_input(premise_str, hypo_list)
     # test_examples = load_demo_input('fuck why my email not come yet', ['anger', 'this text expresses anger', 'the guy is very unhappy'])
-    test_examples = load_demo_input(premise_str, hypo_list.split(' | '))
+    # test_examples = load_demo_input(premise_str, hypo_list.split(' | '))
     test_features = convert_examples_to_features(
         test_examples, label_list, args.max_seq_length, tokenizer, output_mode)
 
@@ -703,18 +712,18 @@ def compute_single_label(premise_str, hypo_list, model, tokenizer):
     # logger.info("  Num examples = %d", len(test_examples))
     # logger.info("  Batch size = %d", args.eval_batch_size)
 
-    test_loss = 0
-    nb_test_steps = 0
+    # test_loss = 0
+    # nb_test_steps = 0
     preds = []
     # print('Testing...')
     for input_ids, input_mask, segment_ids, label_ids in test_dataloader:
         input_ids = input_ids.to(device)
         input_mask = input_mask.to(device)
         segment_ids = segment_ids.to(device)
-        label_ids = label_ids.to(device)
+        # label_ids = label_ids.to(device)
 
         with torch.no_grad():
-            logits = model(input_ids, segment_ids, input_mask, labels=None)
+            logits = model(input_ids, input_mask, segment_ids, labels=None)
         logits = logits[0]
         if len(preds) == 0:
             preds.append(logits.detach().cpu().numpy())
