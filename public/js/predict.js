@@ -17,6 +17,18 @@ $("#btn1").click(function () {
     predict();
 });
 
+$("#btn2").click(function () {
+   $("#text").html(
+       ""
+);
+    var empty_list = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]
+    $("#center").html(
+        $.map(empty_list, function(item) {
+            return '<input type="text" value="' + item + '" >';
+        }).join('')
+    )
+});
+
 $("#buttonRandomButton").click(function () {
     var pool_list = ['search', 'evacuation', 'utilities', 'water', 'shelter', 'medical', 'food', 'crimeviolence', 'terrorism',
         'regimechange', 'society', 'culture', 'science', 'mathematics', 'health', 'education', 'reference', 'computers', 'Internet',
@@ -100,7 +112,9 @@ function predict(){
 
             });
 
-            var dimensions = ["label"] + models
+            // var dimensions = (["label", "Average"]).concat(models);
+            //
+            // var series = Array(models.length + 1).fill({type: 'bar'});
 
             var data =  {
  	// "text":"The fox jumped over the fence, and the fence fell down.","models":["MNLI","FEVER"],"labels":["Society", "Health", "Sports"]};
@@ -145,8 +159,11 @@ function predict(){
                     console.log(json);
                     // json_result = json["json_result"]
                     // $("#result").html(JSON.stringify(json))
+                    dimensions = (["label"]).concat(json["labels"]);
+                    series = Array(models.length + 1).fill({type: 'bar'});
                     console.dir(json);
                     console.log("start charting");
+                    console.log(dimensions);
                     myChart.hideLoading();
                     myChart.setOption({
                         title: {
@@ -169,8 +186,8 @@ function predict(){
                             containLabel: true
                         },
                         dataset: {
-                            dimensions: ["label", "MNLI", "FEVER", "RTE", "Average"],
-                            // dimensions: dimensions,
+                            dimensions: ["label", "MNLI", "FEVER", "RTE", "ESA", "Average"],
+                            // dimensions: (["label", "Average"]).concat(json["models"]),
 
                             // source: [
                             //     {"label": "sadness", "Average": 22.886, "MNLI": 4.373, "FEVER": 62.951, "RTE": 1.335},
@@ -178,7 +195,7 @@ function predict(){
                             //     {"label": "health", "Average": 40.464, "MNLI": 9.415, "FEVER": 81.701, "RTE": 30.275},
                             //     {"label": "sports", "Average": 48.192, "MNLI": 50.021, "FEVER": 84.583, "RTE": 9.971}
                             //     ]
-                            source: json,
+                            source: json["output"],
 
 
                         },
@@ -189,12 +206,11 @@ function predict(){
                         yAxis: {
                             type: 'category',
                         },
-                        series: [
+                        series: [{type: 'bar'},
                             {type: 'bar'},
                             {type: 'bar'},
                             {type: 'bar'},
-                            {type: 'bar'}
-                        ]
+                            {type: 'bar'}]
                     });
 
 
