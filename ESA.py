@@ -301,11 +301,6 @@ def load_sparse_matrix_4_cos(row1, row2):
     sparse_matrix = sparse.load_npz('/home/wyin3/Datasets/Wikipedia20190320/parsed_output/statistics_from_json/ESA_Sparse_v1.npz')
     print('cos: ', cosine_similarity(sparse_matrix.getrow(row1), sparse_matrix.getrow(row2)))
 
-def load_ESA_sparse_matrix():
-    # print('loading sparse matrix for cosine computation...')
-    sparse_matrix = sparse.load_npz('/Users/yangjinrui/Documents/upenn/0shot/BenchmarkingZeroShot/dataset/wikipedia/parsed_output/statistics_from_json/ESA_Sparse_v1.npz')
-    print('load ESA sparse matrix succeed')
-    return sparse_matrix
 
 def crs_matrix_play():
     # mat = lil_matrix((3, 5))
@@ -443,11 +438,19 @@ def transfer_wordlist_2_idlist_with_existing_word2id(token_list, ESA_word2id):
 
 def load_ESA_word2id():
     global ESA_word2id
-    route = '/Users/yangjinrui/Documents/upenn/0shot/BenchmarkingZeroShot/dataset/wikipedia/parsed_output/statistics_from_json/'
-    with open(route+'word2id.json', 'r') as fp2:
+    # Change below word2id.json file path to your own path
+    route = '/Users/yangjinrui/Documents/upenn/0shot/BenchmarkingZeroShot/dataset/wikipedia/parsed_output/statistics_from_json/word2id.json'
+    with open(route, 'r') as fp2:
         ESA_word2id = json.load(fp2)
     print('load ESA word2id succeed')
     return ESA_word2id
+
+def load_ESA_sparse_matrix():
+    # print('loading sparse matrix for cosine computation...')
+    # Change below sparse_maxtrx file path to your own path
+    sparse_matrix = sparse.load_npz('/Users/yangjinrui/Documents/upenn/0shot/BenchmarkingZeroShot/dataset/wikipedia/parsed_output/statistics_from_json/ESA_Sparse_v1.npz')
+    print('load ESA sparse matrix succeed')
+    return sparse_matrix
 
 def main(data_dir):
     # scan_all_json_files('/export/home/Dataset/wikipedia/parsed_output/json/')
