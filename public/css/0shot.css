@@ -128,7 +128,7 @@ input[type=submit]:hover {
 .btn {
   border: none; /* Remove borders */
   color: white; /* Add a text color */
-  padding: 14px 28px; /* Add some padding */
+  padding: 12px 20px; /* Add some padding */
   cursor: pointer; /* Add a pointer cursor on mouse-over */
 }
 
