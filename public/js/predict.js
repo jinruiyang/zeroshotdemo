@@ -165,10 +165,12 @@ function predict(){
                     console.log("start charting");
                     console.log(dimensions);
                     myChart.hideLoading();
+                     $("#result-header").html('<button id="btn3" style="border-radius: 2px;">Sort by Sum</button> ' +
+                         '<button id="btn4" style="margin-left: 20px; border-radius: 2px;">Unsort</button>');
                     myChart.setOption({
                         title: {
                             text: 'Confidence \%',
-                            subtext: 'Sort by Average'
+                            subtext: ''
                         },
                         tooltip: {
                             trigger: 'axis',
@@ -186,7 +188,7 @@ function predict(){
                             containLabel: true
                         },
                         dataset: {
-                            dimensions: ["label", "MNLI", "FEVER", "RTE", "ESA", "Average"],
+                            dimensions: ["label", "MNLI", "FEVER", "RTE", "ESA"],
                             // dimensions: (["label", "Average"]).concat(json["models"]),
 
                             // source: [
@@ -195,7 +197,7 @@ function predict(){
                             //     {"label": "health", "Average": 40.464, "MNLI": 9.415, "FEVER": 81.701, "RTE": 30.275},
                             //     {"label": "sports", "Average": 48.192, "MNLI": 50.021, "FEVER": 84.583, "RTE": 9.971}
                             //     ]
-                            source: json["output"],
+                            source: json["unsorted_output"],
 
 
                         },
@@ -210,14 +212,126 @@ function predict(){
                             {type: 'bar'},
                             {type: 'bar'},
                             {type: 'bar'},
-                            {type: 'bar'}]
+                          ]
                     });
 
-
+                    $("#btn3").click(function () {
+    update_chart(json['sorted_output']);
+});
+                    $("#btn4").click(function () {
+    update_chart(json['unsorted_output']);
+});
 
                     })
                 // .then(json =>console.log(json))
                 .catch(e => console.log(e));
 
-        }
+        };
 
+
+
+function update_chart(sorted_output) {
+    var myChart = echarts.init(document.getElementById('result-chart'));
+    console.log('sort function start');
+    console.log(sorted_output);
+    myChart.setOption({
+                        title: {
+                            text: 'Confidence \%',
+                            subtext: ''
+                        },
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                                type: 'shadow'
+                            }
+                        },
+                        legend: {
+
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                        dataset: {
+                            dimensions: ["label",  "MNLI", "FEVER", "RTE", "ESA" ],
+                            // dimensions: (["label", "Average"]).concat(json["models"]),
+
+                            // source: [
+                            //     {"label": "sadness", "Average": 22.886, "MNLI": 4.373, "FEVER": 62.951, "RTE": 1.335},
+                            //     {"label": "happy", "Average": 22.958, "MNLI": 2.265, "FEVER": 65.422, "RTE": 1.186},
+                            //     {"label": "health", "Average": 40.464, "MNLI": 9.415, "FEVER": 81.701, "RTE": 30.275},
+                            //     {"label": "sports", "Average": 48.192, "MNLI": 50.021, "FEVER": 84.583, "RTE": 9.971}
+                            //     ]
+                            source: sorted_output,
+
+
+                        },
+                        xAxis: {
+                            type: 'value',
+                            boundaryGap: [0, 0.01]
+                        },
+                        yAxis: {
+                            type: 'category',
+                        },
+                        series: [{type: 'bar'},
+                            {type: 'bar'},
+                            {type: 'bar'},
+                            {type: 'bar'}]
+                    });
+
+};
+
+function unsort_chart(sorted_output) {
+    var myChart = echarts.init(document.getElementById('result-chart'));
+    console.log('sort function start');
+    console.log(sorted_output);
+    myChart.setOption({
+                        title: {
+                            text: 'Confidence \%',
+                            subtext: ''
+                        },
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                                type: 'shadow'
+                            }
+                        },
+                        legend: {
+
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                        dataset: {
+                            dimensions: ["label",  "MNLI", "FEVER", "RTE", "ESA" ],
+                            // dimensions: (["label", "Average"]).concat(json["models"]),
+
+                            // source: [
+                            //     {"label": "sadness", "Average": 22.886, "MNLI": 4.373, "FEVER": 62.951, "RTE": 1.335},
+                            //     {"label": "happy", "Average": 22.958, "MNLI": 2.265, "FEVER": 65.422, "RTE": 1.186},
+                            //     {"label": "health", "Average": 40.464, "MNLI": 9.415, "FEVER": 81.701, "RTE": 30.275},
+                            //     {"label": "sports", "Average": 48.192, "MNLI": 50.021, "FEVER": 84.583, "RTE": 9.971}
+                            //     ]
+                            source: sorted_output,
+
+
+                        },
+                        xAxis: {
+                            type: 'value',
+                            boundaryGap: [0, 0.01]
+                        },
+                        yAxis: {
+                            type: 'category',
+                        },
+                        series: [{type: 'bar'},
+                            {type: 'bar'},
+                            {type: 'bar'},
+                            {type: 'bar'}]
+                    });
+
+}

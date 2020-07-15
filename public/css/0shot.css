@@ -116,13 +116,13 @@ input[type=submit]:hover {
 
 #result-header {
     margin-left: 20px;
-    margin-top: 50px;
+    margin-top: 30px;
     font-size: 18px;
 }
 
 #result-chart {
     margin-left: 20px;
-    margin-top: 50px;
+    margin-top: 30px;
     font-size: 18px;
     display: center;
 }

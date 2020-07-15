@@ -373,18 +373,24 @@ def ESA_cosine(text, label_list,ESA_sparse_matrix, ESA_word2id):
     all_texts, all_word2DF = load_text(text, ESA_word2id)
     label_veclist = []
     labelname_idlist = transfer_wordlist_2_idlist_with_existing_word2id(label_list, ESA_word2id)
-    # print(labelname_idlist)
+    # print("label id list", labelname_idlist)
     for i in range(len(label_list)):
         # labelname_idlist = labelnames[i]
         '''label rep is sum up all word ESA vectors'''
         label_veclist.append(text_idlist_2_ESAVector(ESA_sparse_matrix, labelname_idlist[i], False, all_word2DF))
+    # print("label vec list", label_veclist)
     text_idlist = all_texts[0]
+    # print("text id list", text_idlist)
     text_vec = text_idlist_2_ESAVector(ESA_sparse_matrix, text_idlist, True, all_word2DF)
+    # print("text vec", text_vec)
     cos_array = cosine_similarity(text_vec, np.vstack(label_veclist))
+    # print("cos list", cos_array)
+    max_id = np.argmax(cos_array, axis=1)
+    # print("max id", max_id)
 
     for idx, cos in enumerate(cos_array[0]):
         cos_array[0][idx] = round(cos * 100, 3 )
-    print(cos_array[0])
+    # print(cos_array[0])
     return cos_array[0]
 
 def text_idlist_2_ESAVector(ESA_sparse_matrix, idlist, text_bool, all_word2DF):
@@ -471,6 +477,10 @@ def main(data_dir):
 
 
 if __name__ == '__main__':
+    # ESA_sparse_matrix = load_ESA_sparse_matrix().tocsr()
+    # print(ESA_sparse_matrix.shape)
+    # word2id = load_ESA_word2id()
+    # ESA_cosine("This is a test sentence.", ["happy", "sad", "health"], ESA_sparse_matrix, word2id)
     main()
     # parser = argparse.ArgumentParser()
     #
