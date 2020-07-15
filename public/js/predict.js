@@ -165,8 +165,8 @@ function predict(){
                     console.log("start charting");
                     console.log(dimensions);
                     myChart.hideLoading();
-                     $("#result-header").html('<button id="btn3" style="border-radius: 2px;">Sort by Sum</button> ' +
-                         '<button id="btn4" style="margin-left: 20px; border-radius: 2px;">Unsort</button>');
+                     $("#result-header").html('<button id="btn3" style="border-radius: 2px;">Sorted by Sum</button> ' +
+                         '<button id="btn4" style="margin-left: 20px; border-radius: 2px;">Unsorted</button>');
                     myChart.setOption({
                         title: {
                             text: 'Confidence \%',
