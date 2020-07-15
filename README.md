@@ -1,4 +1,4 @@
-# zeorshotdemo
+# zeroshotdemo
 
 Step 1: To download three pretrained entailment models (RTE, MNLI, FEVER), pls go to this URL: https://drive.google.com/file/d/1ILCQR_y-OSTdgkz45LP7JsHcelEsvoIn/view?usp=sharing
 
