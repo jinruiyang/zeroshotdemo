@@ -137,8 +137,8 @@ function predict(){
             var myChart = echarts.init(document.getElementById('result-chart'));
             // Creating a XHR object
             // let xhr = new XMLHttpRequest();
-    console.log('this code is run')
-            var url = "/predict";
+    console.log('this code is run');
+            var url = "./predict";
             myChart.showLoading();
             fetch(url,
                 {
