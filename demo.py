@@ -475,7 +475,7 @@ def compute_metrics(task_name, preds, labels):
     else:
         raise KeyError(task_name)
 
-def load_model(model_name):
+def load_model(model_name, data_dir):
     processors = {
         "rte": RteProcessor
     }
@@ -493,7 +493,7 @@ def load_model(model_name):
 
     label_list = processor.get_labels()  # [0,1]
     num_labels = len(label_list)
-    pretrain_model_dir = '/Users/yangjinrui/Documents/upenn/0shot/BenchmarkingZeroShot/models/FineTuneOn{}'.format(model_name)
+    pretrain_model_dir = '{}/FineTuneOn{}'.format(data_dir, model_name)
     # pretrain_model_dir = 'please enter your pretrain models path here/FineTuneOn{}'.format(model_name)
     # Prepare model
     # cache_dir = os.path.join(str(PYTORCH_TRANSFORMERS_CACHE), '{} model distributed_{}'.format(model_name, -1))
@@ -509,10 +509,10 @@ def load_model(model_name):
     # print(tokenizer)
     return model, tokenizer
 
-def load_model_to_mem():
+def load_model_to_mem(data_dir):
     cache = {}
     for model_name in ["MNLI", "FEVER", "RTE"]:
-        model, tokenizer = load_model(model_name)
+        model, tokenizer = load_model(model_name, data_dir)
         cache[model_name] = (model, tokenizer)
     return cache
 

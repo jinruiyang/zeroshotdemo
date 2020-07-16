@@ -442,19 +442,19 @@ def transfer_wordlist_2_idlist_with_existing_word2id(token_list, ESA_word2id):
             idlist.append(0)
     return idlist
 
-def load_ESA_word2id():
+def load_ESA_word2id(data_dir):
     global ESA_word2id
     # Change below word2id.json file path to your own path
-    route = '/Users/yangjinrui/Documents/upenn/0shot/BenchmarkingZeroShot/dataset/wikipedia/parsed_output/statistics_from_json/word2id.json'
+    route = '{}/word2id.json'.format(data_dir)
     with open(route, 'r') as fp2:
         ESA_word2id = json.load(fp2)
     print('load ESA word2id succeed')
     return ESA_word2id
 
-def load_ESA_sparse_matrix():
+def load_ESA_sparse_matrix(data_dir):
     # print('loading sparse matrix for cosine computation...')
     # Change below sparse_maxtrx file path to your own path
-    sparse_matrix = sparse.load_npz('/Users/yangjinrui/Documents/upenn/0shot/BenchmarkingZeroShot/dataset/wikipedia/parsed_output/statistics_from_json/ESA_Sparse_v1.npz')
+    sparse_matrix = sparse.load_npz('{}/ESA_Sparse_v1.npz'.format(data_dir))
     print('load ESA sparse matrix succeed')
     return sparse_matrix
 
