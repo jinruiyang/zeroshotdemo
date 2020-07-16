@@ -2,6 +2,7 @@ import os.path
 import time
 
 import cherrypy
+from scipy.special import softmax
 from demo import compute_single_label, load_model_to_mem,load_demo_input
 from ESA import load_ESA_sparse_matrix, load_ESA_word2id, ESA_cosine
 
@@ -36,7 +37,7 @@ class StringPredicter(object):
             "models": data["models"],
             "labels": data["labels"],
             "unsorted_output": [],
-            "sorted_output": []
+            "sorted_output": [],
         }
         for idx,label in enumerate(data["labels"]):
             each_label_result = {"label": label, 'Sum': 0.}
@@ -83,5 +84,5 @@ if __name__ == '__main__':
     print("Starting rest service...")
     config = {'server.socket_host': '0.0.0.0'}
     cherrypy.config.update(config)
-    cherrypy.config.update({'server.socket_port': 8081})
+    cherrypy.config.update({'server.socket_port': 8081})  #match the port on dickens server
     cherrypy.quickstart(StringPredicter(), '/', conf)

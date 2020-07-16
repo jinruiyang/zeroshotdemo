@@ -165,8 +165,13 @@ function predict(){
                     console.log("start charting");
                     console.log(dimensions);
                     myChart.hideLoading();
-                     $("#result-header").html('<button id="btn3" style="border-radius: 2px;">Sorted by Sum</button> ' +
-                         '<button id="btn4" style="margin-left: 20px; border-radius: 2px;">Unsorted</button>');
+                     $("#result-header").html('<div style="display: inline-block"><div><button id="btn3" style="border-radius: 2px; width: 120px; float: left">Sort by Sum</button></div>' +
+                         '<div><button id="btn4" style="border-radius: 2px; margin-top: 20px; width: 120px; float: right">Unsorted</button></div></div>' +
+                         '<div><h3>Notes:</h3></div>'
+                         +'<div><p>1. The scores (0~100%) show relevancy of the labels to text, the four models pretrained on different dataset, so they may predict different scores regarding the same label. </p></div>'
+                         +'<div><p>2. The dash means you did not select that pretrained model, please scroll top to select if needed. </p></div>'
+                         +'<div><p>3. Please click the squares in the top of chart to display specific model output.  </p></div>'
+                         +'<div><p>4. \'Sort by Sum\' means sorting labels by their sum of all pretrained model scores.  </p></div>');
                     myChart.setOption({
                         title: {
                             text: 'Confidence \%',
