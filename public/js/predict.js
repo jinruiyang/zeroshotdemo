@@ -174,7 +174,7 @@ function predict(){
                          +'<div><p>2. The dash means did not select that model, please scroll top to select and classify again if needed. </p></div>'
                          +'<div><p>3. Please click the squares in the top of chart to display specific model output.  </p></div>'
                          +'<div><p>4. \'Sort by Sum\' means sorting labels by their sum of all pretrained model scores.  </p></div>'
-                         +'<div><p>5. The demo is running on CPU server, it may take a few seconds to get results.  </p></div>');
+                         +'<div><p>5. This demo is running on CPU server, it may take a few seconds to get results.  </p></div>');
                     myChart.setOption({
                         title: {
                             text: 'Confidence \%',
