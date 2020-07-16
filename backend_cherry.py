@@ -14,11 +14,11 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--ZEROSHOT_MODELS",
                             default=None,
                             type=str,
-                            help="text to classify")
+                            help="dir to save pretrained models")
 parser.add_argument("--ZEROSHOT_RESOURCES",
                             default=None,
                             type=str,
-                            help="text to classify")
+                            help="dir to save ESA files")
 args = parser.parse_args()
 global cache
 cache = load_model_to_mem(args.ZEROSHOT_MODELS)
@@ -42,7 +42,7 @@ class StringPredicter(object):
         cherrypy.response.headers['Content-Type'] = 'application/json'
         data = cherrypy.request.json
         # model_list = ["MNLI", "FEVER", "RTE"]  # FIXED !
-        ESA_cosin_simlarity_list = ESA_cosine(data["text"], data["labels"], ESA_sparse_matrix, ESA_word2id, args.esa_dir)
+        ESA_cosin_simlarity_list = ESA_cosine(data["text"], data["labels"], ESA_sparse_matrix, ESA_word2id)
         result = {
             "text": data["text"],
             "models": data["models"],
@@ -57,7 +57,7 @@ class StringPredicter(object):
                 if model_name in ["MNLI", "FEVER", "RTE"]:
                     model = cache[model_name][0]
                     tokenizer = cache[model_name][1]
-                    each_label_result[model_name] = round((100. * compute_single_label(test_examples, model, tokenizer, args.model_dir)), 3)
+                    each_label_result[model_name] = round((100. * compute_single_label(test_examples, model, tokenizer)), 3)
                     each_label_result['Sum'] += each_label_result[model_name]
                 if model_name == "ESA":
                     each_label_result[model_name] = ESA_cosin_simlarity_list[idx]

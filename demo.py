@@ -593,6 +593,14 @@ def compute_single_label(test_examples, model, tokenizer):
                              "Positive power of 2: static loss scaling value.\n")
     parser.add_argument('--server_ip', type=str, default='', help="Can be used for distant debugging.")
     parser.add_argument('--server_port', type=str, default='', help="Can be used for distant debugging.")
+    parser.add_argument("--ZEROSHOT_MODELS",
+                        default=None,
+                        type=str,
+                        help="dir to save pretrained models")
+    parser.add_argument("--ZEROSHOT_RESOURCES",
+                        default=None,
+                        type=str,
+                        help="dir to save ESA files")
     args = parser.parse_args()
 
     processors = {
