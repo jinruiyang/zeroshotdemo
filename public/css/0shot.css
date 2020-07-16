@@ -1,4 +1,9 @@
-body {font-family: Arial, Helvetica, sans-serif;}
+body {font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    background-color: #fff;}
+
 * {box-sizing: border-box;}
 
 input[type=text], select, textarea {
@@ -28,10 +33,11 @@ input[type=submit]:hover {
 .container {
     border-radius: 5px;
     padding: 8px;
+    margin-left: 10px;
 }
 
 #input-parent {
-    height: 210px;
+    height: 190px;
     display: flex;
 }
 
@@ -65,9 +71,20 @@ input[type=submit]:hover {
 }
 
 #button-left> #text-left {
+        color: #737373;
     display: inline-block;
     width: 70%;
     float: left;
+}
+
+hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 0;
+    border-top: 1px solid #eee;
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: rgb(238, 238, 238);
 }
 
 #button-left> #text-right{
@@ -105,7 +122,7 @@ input[type=submit]:hover {
     height: 180px;
     position: relative;
     overflow: auto;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 #result-parent {
@@ -239,6 +256,7 @@ input[type=submit]:hover {
     outline: none;
     border-radius: 4px;
     width: 100px;
+    margin-top: 10px;
 }
 #btn2{
     float:right;
@@ -252,9 +270,20 @@ input[type=submit]:hover {
     outline: none;
     border-radius: 4px;
     width: 100px;
+    margin-top: 10px;
 }
         .main{
             margin-left: 100px;
             margin-right: 100px;
         }
 
+#btn3 #btn4{
+    border-radius: 2px;
+    width: 120px;
+    float: left;
+    background-color: white;
+    color: black;
+    border: solid 1px black;
+    padding: 3px;
+    border-radius: 4px;
+}

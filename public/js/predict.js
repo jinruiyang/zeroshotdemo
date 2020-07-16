@@ -165,8 +165,10 @@ function predict(){
                     console.log("start charting");
                     console.log(dimensions);
                     myChart.hideLoading();
-                     $("#result-header").html('<div style="display: inline-block"><div><button id="btn3" style="border-radius: 2px; width: 120px; float: left">Sort by Sum</button></div>' +
-                         '<div><button id="btn4" style="border-radius: 2px; margin-top: 20px; width: 120px; float: right">Unsorted</button></div></div>' +
+                     $("#result-header").html(
+
+                         '<div style="display: inline-block"><div><button id="btn3" style="border-radius: 2px; width: 120px; float: left; background-color: white;color: black; border: solid 1px black;padding: 6px; border-radius: 4px;">Sort by Sum</button></div>' +
+                         '<div><button id="btn4" style="border-radius: 2px; width: 120px; float: left; background-color: white;color: black; border: solid 1px black;padding: 6px; border-radius: 4px;  margin-top: 10px;">Unsorted</button></div></div>' +
                          '<div><h3>Notes:</h3></div>'
                          +'<div><p>1. The scores (0~100%) show relevancy of the labels to text, the four models pretrained on different dataset, so they may predict different scores regarding the same label. </p></div>'
                          +'<div><p>2. The dash means did not select that model, please scroll top to select and classify again if needed. </p></div>'
