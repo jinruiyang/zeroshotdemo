@@ -257,6 +257,7 @@ hr {
     border-radius: 4px;
     width: 100px;
     margin-top: 10px;
+    border: solid 1px black;
 }
 #btn2{
     float:right;
@@ -264,7 +265,7 @@ hr {
     margin-left:10px ;
     background-color: white;
     color: black;
-    padding: 6px;
+    padding: 4.5px;
     font-size: 16px;
     border: solid 1px black;
     outline: none;

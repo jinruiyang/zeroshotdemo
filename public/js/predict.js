@@ -167,14 +167,14 @@ function predict(){
                     myChart.hideLoading();
                      $("#result-header").html(
 
-                         '<div style="display: inline-block"><div><button id="btn3" style="border-radius: 2px; width: 120px; float: left; background-color: white;color: black; border: solid 1px black;padding: 6px; border-radius: 4px;">Sort by Sum</button></div>' +
-                         '<div><button id="btn4" style="border-radius: 2px; width: 120px; float: left; background-color: white;color: black; border: solid 1px black;padding: 6px; border-radius: 4px;  margin-top: 10px;">Unsorted</button></div></div>' +
+                         '<div style="display: flex"><div><button id="btn3" style="border-radius: 2px; width: 100px; float: left; background-color: white;color: black; border: solid 1px black;padding: 6px; border-radius: 4px;">Sort by Sum</button></div>' +
+                         '<div><button id="btn4" style="border-radius: 2px; width: 100px; float: left; background-color: white;color: black; border: solid 1px black;padding: 6px; border-radius: 4px;  margin-left: 10px;">Unsorted</button></div></div>' +
                          '<div><h3>Notes:</h3></div>'
                          +'<div><p>1. The scores (0~100%) show coherency between the labels and text, the four models pretrained on different dataset, so they may predict different scores regarding the same label. </p></div>'
                          +'<div><p>2. The dash means did not select that model, please scroll top to select and classify again if needed. </p></div>'
                          +'<div><p>3. Please click the squares in the top of chart to display specific model output.  </p></div>'
-                         +'<div><p>4. \'Sort by Sum\' means sorting labels by their sum of all pretrained model scores.  </p></div>'
-                         +'<div><p>5. This demo is running on CPU server, it may take a few seconds to get results.  </p></div>');
+                         +'<div><p>4. Please click Sort button above to sort labels by their sum of all models score if needed.  </p></div>')
+                         // +'<div><p>4. This demo is running on CPU server, it may take a few seconds to get results.  </p></div>');
                     myChart.setOption({
                         title: {
                             text: 'Confidence \%',
