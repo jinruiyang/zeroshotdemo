@@ -77,15 +77,6 @@ input[type=submit]:hover {
     float: left;
 }
 
-hr {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    border: 0;
-    border-top: 1px solid #eee;
-    border-top-width: 1px;
-    border-top-style: solid;
-    border-top-color: rgb(238, 238, 238);
-}
 
 #button-left> #text-right{
             display: inline-block;
@@ -144,7 +135,7 @@ hr {
     /*font-size: 18px;*/
     display: inline;
     float: right;
-    margin-left: 20p;
+    margin-left: 20px;
 }
 
 #result-chart {
@@ -265,7 +256,7 @@ hr {
     margin-left:10px ;
     background-color: white;
     color: black;
-    padding: 4.5px;
+    padding: 5px;
     font-size: 16px;
     border: solid 1px black;
     outline: none;
