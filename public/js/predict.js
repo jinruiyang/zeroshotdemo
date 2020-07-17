@@ -1,7 +1,7 @@
 
 var label_dic = {
         "topic": ['society', 'science', 'health', 'education', 'computers', "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
-        "emotion": ['love', 'joy', 'anger', 'fear', 'surprise', "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
+        "emotion": ['sadness', 'joy', 'anger', 'fear', 'surprise', "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
         "situation": ['search', 'evacuation', 'utilities', 'water', 'shelter', "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
         "covid-19": ['medical', 'policy', 'travelban', 'health', 'virus', "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]
     };
