@@ -140,6 +140,13 @@ function predict(){
             let labels = [];
             let models = [];
             let descriptions =[];
+            if (text.length == 0) {
+                alert('Please enter text!');
+                history.back();
+                return
+
+            };
+
 
 
             $('#center input').each(function(i){
@@ -148,6 +155,12 @@ function predict(){
                     labels[this.id] = this.value
                 }
             });
+                        if (labels.length == 0) {
+                alert('Please enter at least one label!');
+                history.back();
+                return
+
+            }
             $("input[name^='models']").each(function(i){
                 if(this.checked == true){
                      models.push(this.value);
