@@ -27,6 +27,11 @@ $("#btn2").click(function () {
             return '<input type="text" value="' + item + '" >';
         }).join('')
     )
+        $("#right").html(
+        $.map(empty_list, function(item) {
+            return '<input type="text" value="' + item + '" >';
+        }).join('')
+    )
 });
 
 $("#buttonRandomButton").click(function () {
@@ -99,10 +104,13 @@ function predict(){
 
             let labels = [];
             let models = [];
+            let descriptions =[];
+
 
             $('#center input').each(function(i){
                 if(this.value !== null && this.value !== "" && this.value !== undefined) {
-                    labels.push(this.value);
+                    // labels.push(this.value);
+                    labels[this.id] = this.value
                 }
             });
             $("input[name^='models']").each(function(i){
@@ -110,6 +118,15 @@ function predict(){
                      models.push(this.value);
                 }
 
+            });
+
+            // let description = Array(maxArrayLength?: models.length);
+
+            $('#right input').each(function(i){
+                if(this.value !== null && this.value !== "" && this.value !== undefined) {
+                    // descriptions.push(this.value);
+                    descriptions[this.id] = this.value;
+                }
             });
 
             // var dimensions = (["label", "Average"]).concat(models);
@@ -120,7 +137,8 @@ function predict(){
  	// "text":"The fox jumped over the fence, and the fence fell down.","models":["MNLI","FEVER"],"labels":["Society", "Health", "Sports"]};
             "text": text,
             "labels": labels,
-            "models": models
+            "models": models,
+                "descriptions": descriptions
             };
 
 
