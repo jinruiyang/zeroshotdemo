@@ -389,7 +389,7 @@ def ESA_cosine(text, label_list,ESA_sparse_matrix, ESA_word2id):
     # print("max id", max_id)
 
     for idx, cos in enumerate(cos_array[0]):
-        cos_array[0][idx] = round(cos * 100, 3 )
+        cos_array[0][idx] = round(cos * 100, 4 )
     # print(cos_array[0])
     return cos_array[0]
 

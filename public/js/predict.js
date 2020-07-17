@@ -11,6 +11,7 @@ var text_dic = {
         "In the US , the threshold for gold is half a million.": "In the us, a texas nurse infected with ebola after caring for a liberian man who died from the disease no longer has the virus, her family said.",
         "Sometimes I can't even believe my life.": "Perhat Tursun Perhat Tursun Yarghol I am nonproductive but I am not a dishonored person. I am gonna say that I am not gonna praise you, Perhat Tursun. I would rather curse your weightless verses cold like Germans and like the castle Kafka was not able to get in than praise you, oh Perhat Tursun. I laugh at the smiley poor guys and stop suddenly after that... you made me look bad to the world. You poured the condom in the Tarim river into my brain. Why did you change the pattern of Uyghur poetry that always praises others? Who wants to sit next to you if you do that? You make me turn into a pious man and I am afraid of thinking about you as if I fear water. I am in the hospital because of this serious paradox. Of Perhat Tursun , you created my heart condition. I would understand a little bit if it is a gloomy poem but this looks like a foggy poem. He lived as who he was, didn't he? I liked it. Anybody want to play paradox? Let's play paradox, come on, if you are not concerned about being mentally ill. Let me keep doing. How to call this? Is that a poem? muhlis0998 23:21 5-1-2016 posted time Anybody want to play paradox? Being a mental patient ... You begin first and let's work together if it is ok Of Perhat Tursun , you created my heart condition. The last part is greatly composed. I wish more success for Yarghol's writing. For the readers: Yarghol, look at the parts of the works that you felt unnecessary and what is there is the absolute world you will definitely go to very soon. Learn the difference between word and talk. Just stick with the word and undress limitlessly in the desert of the meaning. Trust the poet who does not stay in the destination. He more and constantly talk about sex, darkness, and death Writer, it might be you that he was cursing. Keep away for what you got used to and who you love. Turn your eyeballs into poisonous arrows and your aim to shameless praises. You should understand that you can learn nothing from us. Dive into our colors and blossom up in our voices and white bushes but forget us for the significance of us. Something like that, Yarghol , I am afraid of something and anxious about something. I feel myself lonely like the moon and powerless like the widowed aunty in the village. Although I know poets die without seeing morning light, I still seek comfort from the verses about lights. I am satisfied with lying and betrayals. Please come, sell me slowly and sneakily. Block the sun that is not straight ever and take my bulky ethereality. Flame my last myths. If my inner organs did not resist the nights and my anxiousness did not warm up January, my stone like hard debts, an unknown someone did not step down on my shoulder, how my life would become miserable. I also feel myself extra like an abandoned gland and feel myself passionate like winter birds. I love the world with some kind of poor emotion... and I believe that is a betrayal for the soul writing poems in this time. I wait for something and seek comfort from something. Maybe I expected a death or a life after the death.."
     };
+var empty_list = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
 
 
 $("#btn1").click(function () {
@@ -21,16 +22,18 @@ $("#btn2").click(function () {
    $("#text").html(
        ""
 );
-    var empty_list = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]
+
     $("#center").html(
-        $.map(empty_list, function(item) {
-            return '<input type="text" value="' + item + '" >';
-        }).join('')
-    )
+        // $.map(empty_list, function(item) {
+        //     return '<input id="" placeholder="" type="text" value="' + item + '" >';
+        // }).join('')
+        LoopLabels(empty_list, 'Label')
+    );
         $("#right").html(
-        $.map(empty_list, function(item) {
-            return '<input type="text" value="' + item + '" >';
-        }).join('')
+        // $.map(empty_list, function(item) {
+        //     return '<input id="" placeholder="" type="text" value="' + item + '" >';
+        // }).join('')
+            LoopLabels(empty_list, 'label description (optional)')
     )
 });
 
@@ -42,12 +45,40 @@ $("#buttonRandomButton").click(function () {
 
     var sample_list = getRandomSubarray(pool_list, 5);
     var full_list = sample_list.concat(["", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]);
+
     $("#center").html(
-        $.map(full_list, function(item) {
-            return '<input type="text" value="' + item + '" >';
-        }).join('')
+        // $.map(full_list, function(item) {
+        //     return '<input id="" placeholder="" type="text" value="' + item + '" >';
+        // }).join('')
+        LoopLabels(full_list, 'Label')
+    );
+
+    $("#right").html(
+        //
+        // $.map(empty_list, function(item) {
+        //     return '<input id="" placeholder="" type="text" value="' + item + '" >';
+        // }).join('')
+         LoopLabels(empty_list, 'label description (optional)')
     )
 });
+
+function LoopLabels(arr, placeholderText) {
+
+    var HtmlString = '', i = 0;
+    while (i < 5 && arr[i] != '') {
+        temp = '<input id="'+ i +'" placeholder="" type="text" value="' + arr[i] + '" >';
+        HtmlString += temp;
+        i ++;
+    } ;
+    while (i < arr.length) {
+        temp = '<input id="'+ i +'" placeholder="'+ placeholderText+' '+ (i+1) +' " type="text" value="" >';
+        HtmlString += temp;
+        i ++;
+    } ;
+    return HtmlString
+
+
+}
 
 function getRandomSubarray(arr, size) {
     var shuffled = arr.slice(0), i = arr.length, temp, index;
@@ -63,12 +94,20 @@ function getRandomSubarray(arr, size) {
 $("#buttonLabel").on('click', 'a', function (event) {
     var key = this.textContent.toLowerCase();
 
-    var list = label_dic[key];
+    var sample_list = label_dic[key];
+    var full_list = sample_list.concat(["", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]);
 
     $("#center").html(
-        $.map(list, function(item) {
-            return '<input type="text" value="' + item + '" >';
-        }).join('')
+        // $.map(list, function(item) {
+        //     return '<input type="text" id="" placeholder="" value="' + item + '" >';
+        // }).join('')
+        LoopLabels(full_list, 'Label')
+    );
+        $("#right").html(
+        // $.map(empty_list, function(item) {
+        //     return '<input id="" placeholder="" type="text" value="' + item + '" >';
+        // }).join('')
+            LoopLabels(empty_list, 'label description (optional)')
     )
 });
 
@@ -79,16 +118,13 @@ $("#buttonText").on('click', 'a', function (event) {
 
     $("#text").html(
        text
-)
+);
+    $("#right").html(
+    LoopLabels(empty_list, 'label description (optional)')
+    )
 
 });
 
-
-
-function chooseLabelSet() {
-
-
-}
 
 function predict(){
 
@@ -97,7 +133,6 @@ function predict(){
             // let labels = document.querySelector('#labels');
             // let models = document.querySelector('#models');
 
-            let result = "it is work";
             let text = $("#text").val();
             //let labels = ["Society", "Health", "Sports"];
             //let models = ["MNLI","FEVER"];
