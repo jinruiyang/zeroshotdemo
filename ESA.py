@@ -372,7 +372,7 @@ def get_wordsize_pagesize(data_dir):
 def ESA_cosine(text, label_list,ESA_sparse_matrix, ESA_word2id):
     all_texts, all_word2DF = load_text(text, ESA_word2id)
     label_veclist = []
-    labelname_idlist = transfer_wordlist_2_idlist_with_existing_word2id([label.lower() for label in label_list], ESA_word2id)
+    labelname_idlist = transfer_wordlist_2_idlist_with_existing_word2id(label_list, ESA_word2id)
     # print("label id list", labelname_idlist)
     for i in range(len(label_list)):
         # labelname_idlist = labelnames[i]
