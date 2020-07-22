@@ -3,7 +3,7 @@ var label_dic = {
         "topics": ['society', 'science', 'health', 'education', 'computers', "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
         "emotions": ['sadness', 'joy', 'anger', 'fear', 'surprise', "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
         "situations": ['search', 'evacuation', 'utilities', 'water', 'shelter', "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
-        "covid-19": ['medical', 'policy', 'travelban', 'health', 'virus', "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]
+        "covid-19": ['diagnosis','ecology','prevention', 'symptom', 'treatment', "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]
     };
 var text_dic = {
         "When is Thanksgiving celebrated in Canada?": "Syrian refugees at Jordan border are undergoing hardships due to lack of water. Massive bushfires are heard at North Alberta in Canada. About 88,000 people had to be evacuated from that area.",
@@ -41,7 +41,8 @@ $("#buttonRandomButton").click(function () {
     var pool_list = ['search', 'evacuation', 'utilities', 'water', 'shelter', 'medical', 'food', 'crimeviolence', 'terrorism',
         'regimechange', 'society', 'culture', 'science', 'mathematics', 'health', 'education', 'reference', 'computers', 'Internet',
         'sports', 'business', 'finance', 'entertainment', 'music', ' family', 'relationships', 'politics', 'government', 'sadness', 'joy',
-        'anger', 'disgust', 'fear', 'surprise', 'shame', 'guilt', 'love'];
+        'anger', 'disgust', 'fear', 'surprise', 'shame', 'guilt', 'love', 'death', 'diagnosis','ecology','prediction','prevention',
+        ,'spread', 'statistics', 'symptom', 'treatment', 'factual', 'interview', 'opinion'];
 
     var sample_list = getRandomSubarray(pool_list, 5);
     var full_list = sample_list.concat(["", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]);
