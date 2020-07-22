@@ -46,6 +46,7 @@ from sklearn.metrics import matthews_corrcoef, f1_score
 
 from transformers.file_utils import PYTORCH_TRANSFORMERS_CACHE
 from transformers.modeling_bert import BertForSequenceClassification
+from transformers import BartForSequenceClassification, BartTokenizer
 from transformers.tokenization_bert import BertTokenizer
 from transformers.optimization import AdamW
 
@@ -755,14 +756,40 @@ def compute_mutiple_labels(premise_str, label_list, model, tokenizer):
         prob_dic[label] = compute_single_label(premise_str, label, model, tokenizer)
     return prob_dic
 
+def loading_bart_model():
+    bart_model = BartForSequenceClassification.from_pretrained('bart-large-mnli')
+    bart_tokenizer = BartTokenizer.from_pretrained('bart-large-mnli')
+    return bart_model, bart_tokenizer
 
+def comput_bart_single_label(premise, label, bart_model, tokenizer):
+    device = torch.device("cpu")
+    hypothesis = f'This text is about {label}.'
+    x = tokenizer.encode(premise, hypothesis, return_tensors='pt',
+                         max_length=tokenizer.max_len,
+                         truncation_strategy='only_first')
+    logits = bart_model(x.to(device))[0]
+
+    # we throw away "neutral" (dim 1) and take the probability of
+    # "entailment" (2) as the probability of the label being true
+    entail_contradiction_logits = logits[:, [0, 2]]
+    probs = entail_contradiction_logits.softmax(1)
+    prob_label_is_true = probs[:, 1]
+    return float(prob_label_is_true)
+    # print('prob:', float(prob_label_is_true))
 
 if __name__ == "__main__":
-    start_time = time.time()
-    prob = compute_mutiple_labels('Metricsdetails  The past decade has allowed the development of a multitude of digital tools. Now they can be used to remediate the COVID-19 outbreak.  The year 2020 should have been the start of an exciting decade in medicine and science, with the development and maturation of several digital technologies that can be applied to tackle major clinical problems and diseases. These digital technologies include the internet of things (IoT) with next-generation telecommunication networks (e.g., 5G)1,2; big-data analytics3; artificial intelligence (AI) that uses deep learning4,5; and blockchain technology6. They are highly inter-related: the proliferation of the IoT (e.g., devices and instruments) in hospitals and clinics facilitates the establishment of a highly interconnected digital ecosystem, enabling real-time data collection at scale, which could then be used by AI and deep learning systems to understand healthcare trends, model risk associations and ', ['anger',  'this text expresses anger', 'the guy is very unhappy', ' Political Implications', 'foreign policy', 'Europe', 'the guy is very unhappy', ' Political Implications', 'foreign policy', 'Europe', 'anger',  'this text expresses anger', 'the guy is very unhappy', ' Political Implications', 'foreign policy', 'Europe', 'the guy is very unhappy', ' Political Implications', 'foreign policy', 'Europe'], 'MNLI')
-    print('prob_list:', prob)
-    print("Response time:{:0.4f}s".format(time.time() - start_time))
-
+    # start_time = time.time()
+    # prob = compute_mutiple_labels('Metricsdetails  The past decade has allowed the development of a multitude of digital tools. Now they can be used to remediate the COVID-19 outbreak.  The year 2020 should have been the start of an exciting decade in medicine and science, with the development and maturation of several digital technologies that can be applied to tackle major clinical problems and diseases. These digital technologies include the internet of things (IoT) with next-generation telecommunication networks (e.g., 5G)1,2; big-data analytics3; artificial intelligence (AI) that uses deep learning4,5; and blockchain technology6. They are highly inter-related: the proliferation of the IoT (e.g., devices and instruments) in hospitals and clinics facilitates the establishment of a highly interconnected digital ecosystem, enabling real-time data collection at scale, which could then be used by AI and deep learning systems to understand healthcare trends, model risk associations and ', ['anger',  'this text expresses anger', 'the guy is very unhappy', ' Political Implications', 'foreign policy', 'Europe', 'the guy is very unhappy', ' Political Implications', 'foreign policy', 'Europe', 'anger',  'this text expresses anger', 'the guy is very unhappy', ' Political Implications', 'foreign policy', 'Europe', 'the guy is very unhappy', ' Political Implications', 'foreign policy', 'Europe'], 'MNLI')
+    # print('prob_list:', prob)
+    # print("Response time:{:0.4f}s".format(time.time() - start_time))
+    #
+    premise ='fuck why my email not come yet'
+    label = 'anger, the guy is very unhappy'
+    hypothesis = f'This text is about {label}.'
+    # test_examples = load_demo_input('fuck why my email not come yet', ['anger | this text expresses anger | the guy is very unhappy'])
+    bart_model = BartForSequenceClassification.from_pretrained('bart-large-mnli')
+    tokenizer = BartTokenizer.from_pretrained('bart-large-mnli')
+    comput_bart_single_label(premise, hypothesis, bart_model, tokenizer)
     '''
     CUDA_VISIBLE_DEVICES=7 python -u demo.py --premise_str 'fuck why my email not come yet' --hypo_list 'anger | this text expresses anger | the guy is very unhappy'
     '''

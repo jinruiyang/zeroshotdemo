@@ -243,7 +243,7 @@ function predict(){
                          // +'<div><p>4. This demo is running on CPU server, it may take a few seconds to get results.  </p></div>');
                     myChart.setOption({
                         title: {
-                            text: 'Confidence \%',
+                            text: 'Coherency \%',
                             subtext: ''
                         },
                         tooltip: {
@@ -262,7 +262,7 @@ function predict(){
                             containLabel: true
                         },
                         dataset: {
-                            dimensions: ["label", "MNLI", "FEVER", "RTE", "ESA"],
+                            dimensions: ["label", "MNLI", "FEVER", "RTE", "ESA", 'Bart-MNLI'],
                             // dimensions: (["label", "Average"]).concat(json["models"]),
 
                             // source: [
@@ -271,7 +271,7 @@ function predict(){
                             //     {"label": "health", "Average": 40.464, "MNLI": 9.415, "FEVER": 81.701, "RTE": 30.275},
                             //     {"label": "sports", "Average": 48.192, "MNLI": 50.021, "FEVER": 84.583, "RTE": 9.971}
                             //     ]
-                            source: json["unsorted_output"],
+                            source: json["sorted_output"],
 
 
                         },
@@ -283,6 +283,7 @@ function predict(){
                             type: 'category',
                         },
                         series: [{type: 'bar'},
+                            {type: 'bar'},
                             {type: 'bar'},
                             {type: 'bar'},
                             {type: 'bar'},
@@ -329,7 +330,7 @@ function update_chart(sorted_output) {
                             containLabel: true
                         },
                         dataset: {
-                            dimensions: ["label",  "MNLI", "FEVER", "RTE", "ESA" ],
+                            dimensions: ["label",  "MNLI", "FEVER", "RTE", "ESA", 'Bart-MNLI' ],
                             // dimensions: (["label", "Average"]).concat(json["models"]),
 
                             // source: [
@@ -352,7 +353,8 @@ function update_chart(sorted_output) {
                         series: [{type: 'bar'},
                             {type: 'bar'},
                             {type: 'bar'},
-                            {type: 'bar'}]
+                            {type: 'bar'},
+                        {type: 'bar'}]
                     });
 
 };
@@ -363,7 +365,7 @@ function unsort_chart(sorted_output) {
     console.log(sorted_output);
     myChart.setOption({
                         title: {
-                            text: 'Confidence \%',
+                            text: 'Coherency \%',
                             subtext: ''
                         },
                         tooltip: {
@@ -382,7 +384,7 @@ function unsort_chart(sorted_output) {
                             containLabel: true
                         },
                         dataset: {
-                            dimensions: ["label",  "MNLI", "FEVER", "RTE", "ESA" ],
+                            dimensions: ["label",  "MNLI", "FEVER", "RTE", "ESA" , 'Bart-MNLI'],
                             // dimensions: (["label", "Average"]).concat(json["models"]),
 
                             // source: [
@@ -403,6 +405,7 @@ function unsort_chart(sorted_output) {
                             type: 'category',
                         },
                         series: [{type: 'bar'},
+                            {type: 'bar'},
                             {type: 'bar'},
                             {type: 'bar'},
                             {type: 'bar'}]

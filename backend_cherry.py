@@ -3,7 +3,7 @@ import time
 
 import cherrypy
 from scipy.special import softmax
-from demo import compute_single_label, load_model_to_mem,load_demo_input
+from demo import compute_single_label, load_model_to_mem,load_demo_input, comput_bart_single_label, loading_bart_model
 from ESA import load_ESA_sparse_matrix, load_ESA_word2id, ESA_cosine
 import argparse
 
@@ -22,9 +22,10 @@ parser.add_argument("--ZEROSHOT_RESOURCES",
 args = parser.parse_args()
 global cache
 cache = load_model_to_mem(args.ZEROSHOT_MODELS)
+bart_model, bart_tokenizer = loading_bart_model()
+print("Load models succeed")
 ESA_sparse_matrix = load_ESA_sparse_matrix(args.ZEROSHOT_RESOURCES).tocsr()
 ESA_word2id = load_ESA_word2id(args.ZEROSHOT_RESOURCES)
-print("Cached models!")
 
 
 class StringPredicter(object):
@@ -67,6 +68,9 @@ class StringPredicter(object):
                             each_label_result['Sum'] += each_label_result[model_name]
                         if model_name == "ESA":
                             each_label_result[model_name] = ESA_cosin_simlarity_list[idx]
+                            each_label_result['Sum'] += each_label_result[model_name]
+                        if model_name == "Bart-MNLI":
+                            each_label_result[model_name] = round((100. * comput_bart_single_label(data['text'], label,bart_model, bart_tokenizer)), 4)
                             each_label_result['Sum'] += each_label_result[model_name]
                     # each_label_result_with_ave['Average'] = round((each_label_result_with_ave['Average'] / len(data["models"])),3 )
                     result["unsorted_output"].append(each_label_result)
