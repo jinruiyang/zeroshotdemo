@@ -767,6 +767,7 @@ def comput_bart_single_label(premise, label, bart_model, tokenizer):
     x = tokenizer.encode(premise, hypothesis, return_tensors='pt',
                          max_length=tokenizer.max_len,
                          truncation_strategy='only_first', truncation=True)
+    # print(x)
     logits = bart_model(x.to(device))[0]
 
     # we throw away "neutral" (dim 1) and take the probability of
@@ -787,8 +788,8 @@ if __name__ == "__main__":
     label = 'anger, the guy is very unhappy'
     hypothesis = f'This text is about {label}.'
     # test_examples = load_demo_input('fuck why my email not come yet', ['anger | this text expresses anger | the guy is very unhappy'])
-    bart_model = BartForSequenceClassification.from_pretrained('bart-large-mnli')
-    tokenizer = BartTokenizer.from_pretrained('bart-large-mnli')
+    bart_model = BartForSequenceClassification.from_pretrained('facebook/bart-large-mnli')
+    tokenizer = BartTokenizer.from_pretrained('facebook/bart-large-mnli')
     comput_bart_single_label(premise, hypothesis, bart_model, tokenizer)
     '''
     CUDA_VISIBLE_DEVICES=7 python -u demo.py --premise_str 'fuck why my email not come yet' --hypo_list 'anger | this text expresses anger | the guy is very unhappy'

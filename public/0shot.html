@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+    <META HTTP-EQUIV="EXPIRES" CONTENT="0">
     <title>Zero-Shot Text Classification Demo</title>
     <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">
     <link rel="shortcut icon" type="image/x-icon" href="https://cogcomp.seas.upenn.edu/images/ccg.ico"/>
@@ -40,7 +43,7 @@
           <!--<label class="checkbox-inline">-->
       <!--<input type="checkbox" name="models" value="">ESA-->
     <!--</label>-->
-    <h4 style="color: #737373;">Please enter text and labels below, label can be aligned with multiple Descriptions(right cloum), please separate by ' | ').  </h4>
+    <h4 style="color: #737373;">Please enter text, labels and optional label descriptions below. For each label, you can add multiple descriptions on the same line, separated by ' | ', which may influence the outcome.  </h4>
 
 </div>
 <!--Buttons filed-->
@@ -51,56 +54,41 @@
             <h4></h4>
         </div>
         <div id="text-right">
-            <button class="btn" >Example Texts </button>
         <div class="dropdown">
           <button class="btn" style="border-left:1px solid navy">
+              Example
             <i class="fa fa-caret-down"></i>
+
           </button>
           <div class="dropdown-content" id="buttonText">
-            <a href="#">When is Thanksgiving celebrated in Canada?</a>
-            <a href="#">The Christian Music field.</a>
-            <a href="#">In the US , the threshold for gold is half a million.</a>
-            <a href="#">Sometimes I can't even believe my life.</a>
+            <a href="#">Facial recognition as policing tool faces resistance in US</a>
+             <a href="#">Expert: Speed vs Safety in Vaccine Race</a>
+            <a href="#">Getting serious about gaming disorder</a>
           </div>
         </div>
         </div>
     </div>
     <!--TODO 2 Ramdom Labels -->
-    <div id="botton-center">
-         <button id="buttonRandomButton" class="btn info" >Random Label</button>
-    </div>
+
 
     <!-- TODO 3 Sample Labels Lest-->
-        <div id="button-right">
-         <button class="btn">Example Label  Sets </button>
-        <div class="dropdown">
-          <button class="btn" style="border-left:1px solid navy">
-            <i class="fa fa-caret-down"></i></button>
-          <div class="dropdown-content" id="buttonLabel">
-            <a  href="#">Topics</a>
-            <a href="#" >Emotions</a>
-            <a href="#">Situations</a>
-            <a href="#" >Covid-19</a>
-          </div>
-        </div>
 
-    </div>
 </div>
 
     <div id="input-parent">
 
         <div id="left">
             <div class="textarea-wrapper">
-                <textarea id="text" name="text">The plague in Mongolia, occurring last week, has caused more than a thousand isolation.</textarea>
+                <textarea id="text" name="text" placeholder="Please enter text to classify"></textarea>
             </div>
         </div>
 
         <div id="center">
-            <input type="text" id="0" name="labels" placeholder="Label 1" value="computer"><br>
-            <input type="text" id="1" name="labels" placeholder="Label 2" value="medicine"><br>
-            <input type="text" id="2" name="labels" placeholder="Label 3" value="medicine"><br>
-            <input type="text" id="3" name="labels" placeholder="Enter Label" value="pandemic"><br>
-            <input type="text" id="4" name="labels" placeholder="Label 5" value="sports"><br>
+            <input type="text" id="0" name="labels" placeholder="Label 1" value=""><br>
+            <input type="text" id="1" name="labels" placeholder="Label 2" value=""><br>
+            <input type="text" id="2" name="labels" placeholder="Label 3" value=""><br>
+            <input type="text" id="3" name="labels" placeholder="Label 4" value=""><br>
+            <input type="text" id="4" name="labels" placeholder="Label 5" value=""><br>
             <input type="text" id="5" name="labels" placeholder="Label 6" value=""><br>
             <input type="text" id="6" name="labels" placeholder="Label 7" value=""><br>
             <input type="text" id="7" name="labels" placeholder="Label 8" value=""><br>
@@ -121,33 +109,33 @@
         </div>
 
         <div id="right">
-            <input type="text" id="0" name="des" placeholder="label 1 description (optional)" value="Fast computing | Computer is a machine that can be instructed to carry out sequences of arithmetic or logical operations automatically via computer programming "><br>
-            <input type="text" id="1" name="des" placeholder="label 2 description (optional)"value="Medicine is the science and practice of establishing the diagnosis, prognosis, treatment, and prevention of disease."><br>
-            <input type="text" id="2" name="des" placeholder="label 3 description (optional)" ><br>
-            <input type="text" id="3" name="des" placeholder="label 4 description (optional)"><br>
-            <input type="text" id="4" name="des" placeholder="label 5 description (optional)"><br>
-            <input type="text" id="5" name="des" placeholder="label 6 description (optional)"><br>
-            <input type="text" id="6" name="des" placeholder="label 7 description (optional)"><br>
-            <input type="text" id="7" name="des" placeholder="label 8 description (optional)"><br>
-            <input type="text" id="8" name="des" placeholder="label 9 description (optional)"><br>
-            <input type="text" id="9" name="des" placeholder="label 10 description (optional)"><br>
-            <input type="text" id="10" name="des" placeholder="label 11 description (optional))"><br>
-            <input type="text" id="11" name="des" placeholder="label 12 description (optional)"><br>
-            <input type="text" id="12" name="des" placeholder="label 13 description (optional)"><br>
-            <input type="text" id="13" name="des" placeholder="label 14 description (optional)"><br>
-            <input type="text" id="14" name="des" placeholder="label 15 description (optional)"><br>
-            <input type="text" id="15" name="des" placeholder="label 16 description (optional)"><br>
-            <input type="text" id="16" name="des" placeholder="label 17 description (optional)"><br>
-            <input type="text" id="17" name="des" placeholder="label 18 description (optional)"><br>
-            <input type="text" id="18" name="des" placeholder="label 19 description (optional)"><br>
-            <input type="text" id="19" name="des" placeholder="label 20 description (optional)"><br>
+            <input type="text" id="0" name="des" placeholder="Label 1 description (optional)" value="""><br>
+            <input type="text" id="1" name="des" placeholder="Label 2 description (optional)" value=""><br>
+            <input type="text" id="2" name="des" placeholder="Label 3 description (optional)" value=""><br>
+            <input type="text" id="3" name="des" placeholder="Label 4 description (optional)" value=""><br>
+            <input type="text" id="4" name="des" placeholder="Label 5 description (optional)" value=""><br>
+            <input type="text" id="5" name="des" placeholder="Label 6 description (optional)" value=""><br>
+            <input type="text" id="6" name="des" placeholder="Label 7 description (optional)" value=""><br>
+            <input type="text" id="7" name="des" placeholder="Label 8 description (optional)" value=""><br>
+            <input type="text" id="8" name="des" placeholder="Label 9 description (optional)" value=""><br>
+            <input type="text" id="9" name="des" placeholder="Label 10 description (optional)" value=""><br>
+            <input type="text" id="10" name="des" placeholder="Label 11 description (optional))" value=""><br>
+            <input type="text" id="11" name="des" placeholder="Label 12 description (optional)" value=""><br>
+            <input type="text" id="12" name="des" placeholder="Label 13 description (optional)" value=""><br>
+            <input type="text" id="13" name="des" placeholder="Label 14 description (optional)" value=""><br>
+            <input type="text" id="14" name="des" placeholder="Label 15 description (optional)" value=""><br>
+            <input type="text" id="15" name="des" placeholder="Label 16 description (optional)" value=""><br>
+            <input type="text" id="16" name="des" placeholder="Label 17 description (optional)" value=""><br>
+            <input type="text" id="17" name="des" placeholder="Label 18 description (optional)" value=""><br>
+            <input type="text" id="18" name="des" placeholder="Label 19 description (optional)" value=""><br>
+            <input type="text" id="19" name="des" placeholder="Label 20 description (optional)" value=""><br>
         </div>
     </div>
 
     <div id='left'>
         <button id="btn1">Classify!</button>
         <button id="btn2">Clear Text</button>
-        <p style="color: #737373;">This demo is running on CPU server, it may take a few seconds to get results.  </p>
+        <p style="color: #737373;">This demo is running on a CPU server, it may take a few seconds to get results.  </p>
     </div>
 
 

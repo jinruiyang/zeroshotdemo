@@ -11,6 +11,30 @@ var text_dic = {
         "In the US , the threshold for gold is half a million.": "In the us, a texas nurse infected with ebola after caring for a liberian man who died from the disease no longer has the virus, her family said.",
         "Sometimes I can't even believe my life.": "Perhat Tursun Perhat Tursun Yarghol I am nonproductive but I am not a dishonored person. I am gonna say that I am not gonna praise you, Perhat Tursun. I would rather curse your weightless verses cold like Germans and like the castle Kafka was not able to get in than praise you, oh Perhat Tursun. I laugh at the smiley poor guys and stop suddenly after that... you made me look bad to the world. You poured the condom in the Tarim river into my brain. Why did you change the pattern of Uyghur poetry that always praises others? Who wants to sit next to you if you do that? You make me turn into a pious man and I am afraid of thinking about you as if I fear water. I am in the hospital because of this serious paradox. Of Perhat Tursun , you created my heart condition. I would understand a little bit if it is a gloomy poem but this looks like a foggy poem. He lived as who he was, didn't he? I liked it. Anybody want to play paradox? Let's play paradox, come on, if you are not concerned about being mentally ill. Let me keep doing. How to call this? Is that a poem? muhlis0998 23:21 5-1-2016 posted time Anybody want to play paradox? Being a mental patient ... You begin first and let's work together if it is ok Of Perhat Tursun , you created my heart condition. The last part is greatly composed. I wish more success for Yarghol's writing. For the readers: Yarghol, look at the parts of the works that you felt unnecessary and what is there is the absolute world you will definitely go to very soon. Learn the difference between word and talk. Just stick with the word and undress limitlessly in the desert of the meaning. Trust the poet who does not stay in the destination. He more and constantly talk about sex, darkness, and death Writer, it might be you that he was cursing. Keep away for what you got used to and who you love. Turn your eyeballs into poisonous arrows and your aim to shameless praises. You should understand that you can learn nothing from us. Dive into our colors and blossom up in our voices and white bushes but forget us for the significance of us. Something like that, Yarghol , I am afraid of something and anxious about something. I feel myself lonely like the moon and powerless like the widowed aunty in the village. Although I know poets die without seeing morning light, I still seek comfort from the verses about lights. I am satisfied with lying and betrayals. Please come, sell me slowly and sneakily. Block the sun that is not straight ever and take my bulky ethereality. Flame my last myths. If my inner organs did not resist the nights and my anxiousness did not warm up January, my stone like hard debts, an unknown someone did not step down on my shoulder, how my life would become miserable. I also feel myself extra like an abandoned gland and feel myself passionate like winter birds. I love the world with some kind of poor emotion... and I believe that is a betrayal for the soul writing poems in this time. I wait for something and seek comfort from something. Maybe I expected a death or a life after the death.."
     };
+
+var examples ={
+    "Facial recognition as policing tool faces resistance in US": {
+        "text": "Facial recognition software matches surveillance footage of criminal suspects with photos from police databases. Critics say the technology infringes on privacy rights and are pushing for more stringent regulations. Outright bans have been enacted in Cambridge, Massachusetts, and San Francisco, California, among other cities.",
+        "labels": ["accidents","technology", "science", "", "", "","", "", "", "", "", "", "", "", "", "", "", "", "","" ],
+        "descriptitons": ["break in | crimes", "computer vision | artificial intelligence", "science is a systematic enterprise that builds and organizes knowledge in the form of testable explanations and predictions about the universe.", "", "", "","", "", "", "", "", "", "", "", "", "", "", "", "", ""]
+    },
+
+    "Expert: Speed vs Safety in Vaccine Race": {
+        "text": "Vaccine research expert Dr. Ishii Ken discusses Oxford University's latest findings, plus ongoing coronavirus vaccine efforts around the world and the need to balance speed with safety in the vaccine race.",
+        "labels": ["plague","technology", "technology", "music", "", "", "","", "", "", "", "", "", "", "", "", "", "", "", "","" ],
+        "descriptitons": ["Covid-19 | Coronaviruses are a group of related RNA viruses.", "medical", "", "", "", "","", "", "", "", "", "", "", "", "", "", "", "", "", ""]
+    },
+    "Getting serious about gaming disorder": {
+        "text": "A recent survey on addiction by Japanese researchers suggests that playing video games for long periods can be seriously harmful to people's work life and health. It is the first nationwide survey of gaming behavior in the country.",
+        "labels": ["children", "technology", "lifestyle", "", "", "","", "", "", "", "", "", "", "", "", "", "", "", "","" ],
+        "descriptitons": ["", "", "", "", "", "","", "", "", "", "", "", "", "", "", "", "", "", "", ""]
+    },
+
+
+
+
+};
+
 var empty_list = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
 
 
@@ -33,7 +57,7 @@ $("#btn2").click(function () {
         // $.map(empty_list, function(item) {
         //     return '<input id="" placeholder="" type="text" value="' + item + '" >';
         // }).join('')
-            LoopLabels(empty_list, 'label description (optional)')
+            LoopLabels(empty_list, 'Label description (optional)')
     )
 });
 
@@ -66,7 +90,7 @@ $("#buttonRandomButton").click(function () {
 function LoopLabels(arr, placeholderText) {
 
     var HtmlString = '', i = 0;
-    while (i < 5 && arr[i] != '') {
+    while (arr[i] != '') {
         temp = '<input id="'+ i +'" placeholder="" type="text" value="' + arr[i] + '" >';
         HtmlString += temp;
         i ++;
@@ -93,9 +117,11 @@ function getRandomSubarray(arr, size) {
 }
 
 $("#buttonLabel").on('click', 'a', function (event) {
-    var key = this.textContent.toLowerCase();
+    var key = this.textContent;
 
-    var sample_list = label_dic[key];
+    var text = examples[key]["text"];
+    var label_list = examples[key]["labels"];
+    var descriptitons_list = examples[key]["descriptitons"];
     var full_list = sample_list.concat(["", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]);
 
     $("#center").html(
@@ -114,15 +140,21 @@ $("#buttonLabel").on('click', 'a', function (event) {
 
 $("#buttonText").on('click', 'a', function (event) {
     var key = this.textContent;
+    console.log(key);
+    var text = examples[key]["text"];
+    var label_list = examples[key]["labels"];
+    var descriptitons_list = examples[key]["descriptitons"];
 
-    var text = text_dic[key];
 
     $("#text").html(
        text
 );
-    $("#right").html(
-    LoopLabels(empty_list, 'label description (optional)')
-    )
+    $("#center").html(
+    LoopLabels(label_list, 'label')
+    );
+        $("#right").html(
+    LoopLabels(descriptitons_list, 'label description (optional)')
+    );
 
 });
 
@@ -142,7 +174,7 @@ function predict(){
             let models = [];
             let descriptions =[];
             if (text.length == 0) {
-                alert('Please enter text!');
+                alert('Please enter text or select one example!');
                 history.back();
                 return
 
@@ -234,13 +266,15 @@ function predict(){
                     myChart.hideLoading();
                      $("#result-header").html(
 
-                         '<div style="display: flex"><div><button id="btn3" style="border-radius: 2px; width: 100px; float: left; background-color: white;color: black; border: solid 1px black;padding: 6px; border-radius: 4px;">Sort by Sum</button></div>' +
-                         '<div><button id="btn4" style="border-radius: 2px; width: 100px; float: left; background-color: white;color: black; border: solid 1px black;padding: 6px; border-radius: 4px;  margin-left: 10px;">Unsorted</button></div></div>' +
+                         // '<div style="display: flex"><div><button id="btn3" style="border-radius: 2px; width: 100px; float: left; background-color: white;color: black; border: solid 1px black;padding: 6px; border-radius: 4px;">Sort by Sum</button></div>' +
+                         // '<div><button id="btn4" style="border-radius: 2px; width: 100px; float: left; background-color: white;color: black; border: solid 1px black;padding: 6px; border-radius: 4px;  margin-left: 10px;">Unsorted</button></div></div>' +
                          '<div><h3>Notes:</h3></div>'
-                         +'<div><p>1. The scores (0~100%) show coherency between the labels and text, the four models pretrained on different dataset, so they may predict different scores regarding the same label. </p></div>'
-                         +'<div><p>2. The dash means did not select that model, please scroll top to select and classify again if needed. </p></div>'
-                         +'<div><p>3. Please click the squares in the top of chart to display specific model output.  </p></div>'
-                         +'<div><p>4. Please click Sort button above to sort labels by their sum of all models score if needed.  </p></div>')
+                         +'<div><p>1. The scores (0~100%) show coherency between the labels and text. The five models were pretrained on different datasets, so they may predict different scores for the same label. The labels are sorted based on the sum of the scores for all models. </p></div>'
+                         +'<div><p>2. The dash means that model was not selected. Please scroll back up to select and classify again if needed. </p></div>'
+
+                         +'<div><p>3. Please click the squares in the top of the chart to display specific models in the output, or to remove models you did not select.  </p></div>'
+                     );
+
                          // +'<div><p>4. This demo is running on CPU server, it may take a few seconds to get results.  </p></div>');
                     myChart.setOption({
                         title: {
