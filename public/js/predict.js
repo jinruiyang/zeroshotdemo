@@ -13,15 +13,21 @@ var text_dic = {
     };
 
 var examples ={
+    "How does the virus spread？": {
+        "text": "The virus that causes COVID-19 is thought to spread mainly from person to person, mainly through respiratory droplets produced when an infected person coughs, sneezes, or talks. These droplets can land in the mouths or noses of people who are nearby or possibly be inhaled into the lungs. Spread is more likely when people are in close contact with one another (within about 6 feet).",
+        "labels": ["pandemic", "medicine","medicine", "sports", "", "","", "", "", "", "", "", "", "", "", "", "", "", "","" ],
+        "descriptitons": ["pestilence | plague", "Medicine is the science and practice of establishing the diagnosis, prognosis, treatment, and prevention of disease. ", "", "", "", "","", "", "", "", "", "", "", "", "", "", "", "", "", ""]
+    },
+
     "Facial recognition as policing tool faces resistance in US": {
         "text": "Facial recognition software matches surveillance footage of criminal suspects with photos from police databases. Critics say the technology infringes on privacy rights and are pushing for more stringent regulations. Outright bans have been enacted in Cambridge, Massachusetts, and San Francisco, California, among other cities.",
-        "labels": ["accidents","technology", "science", "", "", "","", "", "", "", "", "", "", "", "", "", "", "", "","" ],
+        "labels": ["accidents","technology", "science", "technology", "", "","", "", "", "", "", "", "", "", "", "", "", "", "","" ],
         "descriptitons": ["break in | crimes", "computer vision | artificial intelligence", "science is a systematic enterprise that builds and organizes knowledge in the form of testable explanations and predictions about the universe.", "", "", "","", "", "", "", "", "", "", "", "", "", "", "", "", ""]
     },
 
     "Expert: Speed vs Safety in Vaccine Race": {
         "text": "Vaccine research expert Dr. Ishii Ken discusses Oxford University's latest findings, plus ongoing coronavirus vaccine efforts around the world and the need to balance speed with safety in the vaccine race.",
-        "labels": ["plague","technology", "technology", "music", "", "", "","", "", "", "", "", "", "", "", "", "", "", "", "","" ],
+        "labels": ["plague","technology", "music", "", "", "", "","", "", "", "", "", "", "", "", "", "", "", "", "","" ],
         "descriptitons": ["Covid-19 | Coronaviruses are a group of related RNA viruses.", "medical", "", "", "", "","", "", "", "", "", "", "", "", "", "", "", "", "", ""]
     },
     "Getting serious about gaming disorder": {
