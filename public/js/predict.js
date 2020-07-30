@@ -238,7 +238,10 @@ function predict(){
             {label: '4', 'MNLI': 83.1, 'FEVER': 73.4, 'RTE': 55.1},
             {label: 's', 'MNLI': 86.4, 'FEVER': 65.2, 'RTE': 82.5},
             {label: 'heh', 'MNLI': 72.4, 'FEVER': 53.9, 'RTE': 39.1}
-        ]
+        ];
+
+            document.getElementById('result-chart').style = "width: 800px; height: 400px;";
+
             var myChart = echarts.init(document.getElementById('result-chart'));
             // Creating a XHR object
             // let xhr = new XMLHttpRequest();
