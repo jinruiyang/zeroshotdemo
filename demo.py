@@ -611,7 +611,8 @@ def compute_single_label(test_examples, model, tokenizer):
     output_modes = {
         "rte": "classification"
     }
-    device = torch.device("cpu")
+    # device = torch.device("cpu")
+    device = torch.device("cuda" if torch.cuda.is_available() and not args.no_cuda else "cpu")
     # if args.local_rank == -1 or args.no_cuda:
     #     device = torch.device("cuda" if torch.cuda.is_available() and not args.no_cuda else "cpu")
     #     n_gpu = torch.cuda.device_count()
@@ -762,7 +763,8 @@ def loading_bart_model():
     return bart_model, bart_tokenizer
 
 def comput_bart_single_label(premise, label, bart_model, tokenizer):
-    device = torch.device("cpu")
+    # device = torch.device("cpu")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     hypothesis = f'This text is about {label}.'
     x = tokenizer.encode(premise, hypothesis, return_tensors='pt',
                          max_length=tokenizer.max_len,
