@@ -6,7 +6,7 @@ Step 2: Download ESA word2id.json and matrix from the URL https://drive.google.c
 
 Step 3 : 
 
-$python3 backend_cherry.py --ZEROSHOT_MODELS <the path of FOLDER you save pretrained mopdel from step 1> --ZEROSHOT_RESOURCES <the path of FOLDER you save ESA from step 2>  
+$ CUDA_VISIBLE_DEVICES=2,3 python3 backend_cherry.py --ZEROSHOT_MODELS <the path of FOLDER you save pretrained mopdel from step 1> --ZEROSHOT_RESOURCES <the path of FOLDER you save ESA from step 2>  
 
 Note: Please keep eye on just the folder path, not the files path. 
 
