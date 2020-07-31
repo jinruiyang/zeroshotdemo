@@ -770,7 +770,9 @@ def comput_bart_single_label(premise, label, bart_model, tokenizer):
                          max_length=tokenizer.max_len,
                          truncation_strategy='only_first', truncation=True)
     # print(x)
+    bart_model.to(device)
     logits = bart_model(x.to(device))[0]
+
 
     # we throw away "neutral" (dim 1) and take the probability of
     # "entailment" (2) as the probability of the label being true
