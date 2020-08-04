@@ -53,6 +53,7 @@ $("#btn2").click(function () {
        ""
 );
 
+
     $("#center").html(
         // $.map(empty_list, function(item) {
         //     return '<input id="" placeholder="" type="text" value="' + item + '" >';
@@ -144,6 +145,8 @@ $("#buttonLabel").on('click', 'a', function (event) {
     )
 });
 
+
+
 $("#buttonText").on('click', 'a', function (event) {
     var key = this.textContent;
     console.log(key);
@@ -164,6 +167,18 @@ $("#buttonText").on('click', 'a', function (event) {
 
 });
 
+function showModelDropDown(arr) {
+    var HTMLString = '<div class="dropdown"> <button class="btn" style="border-left:1px solid navy">Models <i class="fa fa-caret-down"></i> </button> <div class="dropdown-content" id="buttonModel">';
+        arr.forEach(function (item) {
+            HTMLString += '<a href="#">' +item+ '</a>';
+        });
+        HTMLString += '<a href="#">All Models</a>';
+    HTMLString +=  '</div> </div>';
+
+
+
+    return HTMLString
+}
 
 function predict(){
 
@@ -267,21 +282,28 @@ function predict(){
                     console.log(json);
                     // json_result = json["json_result"]
                     // $("#result").html(JSON.stringify(json))
-                    dimensions = (["label"]).concat(json["labels"]);
-                    series = Array(models.length + 1).fill({type: 'bar'});
+                    // dimensions = (["label"]).concat(json["models"]);
+                    // series = Array(models.length + 1).fill({type: 'bar'});
                     console.dir(json);
-                    console.log("start charting");
-                    console.log(dimensions);
+                    // console.log("start charting");
+                    // console.log(dimensions);
                     myChart.hideLoading();
                      $("#result-header").html(
-
-                         // '<div style="display: flex"><div><button id="btn3" style="border-radius: 2px; width: 100px; float: left; background-color: white;color: black; border: solid 1px black;padding: 6px; border-radius: 4px;">Sort by Sum</button></div>' +
-                         // '<div><button id="btn4" style="border-radius: 2px; width: 100px; float: left; background-color: white;color: black; border: solid 1px black;padding: 6px; border-radius: 4px;  margin-left: 10px;">Unsorted</button></div></div>' +
-                         '<div><h3>Notes:</h3></div>'
+                         '<div>'
+                         + showModelDropDown(json['models'])
+                         +'</div>'
+                         + '<div><h3>Notes:</h3></div>'
                          +'<div><p>1. The scores (0~100%) show coherency between the labels and text. The five models were pretrained on different datasets, so they may predict different scores for the same label. The labels are sorted based on the sum of the scores for all models. </p></div>'
-                         +'<div><p>2. The dash means that model was not selected. Please scroll back up to select and classify again if needed. </p></div>'
+                         // +'<div><p>2. The dash means that model was not selected. Please scroll back up to select and classify again if needed. </p></div>'
 
-                         +'<div><p>3. Please click the squares in the top of the chart to display specific models in the output, or to remove models you did not select.  </p></div>'
+                         +'<div><p>2. Please click the squares in the top of the chart to display specific models in the output, or to remove models you did not select.  </p></div>'
+                         +'<div><p>3. Please use the dropdown list to sort labels by specific model if needed.  </p> </div>'
+
+                         //  + '<ul>'
+                        //  + '<div><button id="btn3" style="border-radius: 2px; width: 80px;  background-color: white;color: black; border: solid 1px black;padding: 6px; border-radius: 4px; display: inline-block">MNLI</button></div>'
+                        //  + '<div><button id="btn4" style="border-radius: 2px; width: 80px;  background-color: white;color: black; border: solid 1px black;padding: 6px; border-radius: 4px;  margin-left: 10px; display: inline-block">FEVER</button></div></div>'
+                        // + '<div><button id="btn5" style="border-radius: 2px; width: 80px; background-color: white;color: black; border: solid 1px black;padding: 6px; border-radius: 4px;  margin-left: 10px; display: inline-block">RTE</button></div></ul>'
+
                      );
 
                          // +'<div><p>4. This demo is running on CPU server, it may take a few seconds to get results.  </p></div>');
@@ -306,8 +328,9 @@ function predict(){
                             containLabel: true
                         },
                         dataset: {
-                            dimensions: ["label", "MNLI", "FEVER", "RTE", "ESA", 'Bart-MNLI'],
-                            // dimensions: (["label", "Average"]).concat(json["models"]),
+                            // dimensions: ["label", "MNLI", "FEVER", "RTE", "ESA", 'Bart-MNLI'],
+                            dimensions: (["label"]).concat(json["models"]),
+
 
                             // source: [
                             //     {"label": "sadness", "Average": 22.886, "MNLI": 4.373, "FEVER": 62.951, "RTE": 1.335},
@@ -319,6 +342,7 @@ function predict(){
 
 
                         },
+
                         xAxis: {
                             type: 'value',
                             boundaryGap: [0, 0.01]
@@ -326,19 +350,24 @@ function predict(){
                         yAxis: {
                             type: 'category',
                         },
-                        series: [{type: 'bar'},
-                            {type: 'bar'},
-                            {type: 'bar'},
-                            {type: 'bar'},
-                            {type: 'bar'},
-                          ]
-                    });
+                        series: Array(json["models"].length).fill({type: 'bar'})
 
-                    $("#btn3").click(function () {
-    update_chart(json['sorted_output']);
-});
-                    $("#btn4").click(function () {
-    update_chart(json['unsorted_output']);
+
+
+                    }, true);
+
+
+                    $("#buttonModel").on('click', 'a', function (event) {
+    var key = this.textContent;
+    // console.log(key);
+    if (key == "All Models") {
+        sort_chart_all_model(json)
+    } else {
+    update_chart_each_model(json['sorted_output'], key)
+                        };
+
+
+
 });
 
                     })
@@ -347,12 +376,43 @@ function predict(){
 
         };
 
+function sort_each_model(sorted_output, model) {
+    each_model_output = [];
+
+    for (var i=0; i < sorted_output.length; i++) {
+            temp_obj = {};
+            temp_obj['label'] = sorted_output[i]['label'];
+            temp_obj[model] =  sorted_output[i][model];
+            each_model_output.push(temp_obj);
+    };
+
+        // console.log('before sorting', each_model_output);
+        each_model_output.sort(dynamicSort(model));
+    return each_model_output
+}
 
 
-function update_chart(sorted_output) {
+function dynamicSort(property) {
+    var sortOrder = 1;
+    if(property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1);
+    }
+    return function (a,b) {
+        /* next line works with strings and numbers,
+         * and you may want to customize it to your needs
+         */
+        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+        return result * sortOrder;
+    }
+}
+
+function update_chart_each_model(sorted_output, model) {
     var myChart = echarts.init(document.getElementById('result-chart'));
-    console.log('sort function start');
+    console.log('sort oen model');
     console.log(sorted_output);
+    each_model_output = sort_each_model(sorted_output, model);
+    console.log(each_model_output);
     myChart.setOption({
                         title: {
                             text: 'Confidence \%',
@@ -374,7 +434,7 @@ function update_chart(sorted_output) {
                             containLabel: true
                         },
                         dataset: {
-                            dimensions: ["label",  "MNLI", "FEVER", "RTE", "ESA", 'Bart-MNLI' ],
+                            dimensions: ["label",  model],
                             // dimensions: (["label", "Average"]).concat(json["models"]),
 
                             // source: [
@@ -383,7 +443,7 @@ function update_chart(sorted_output) {
                             //     {"label": "health", "Average": 40.464, "MNLI": 9.415, "FEVER": 81.701, "RTE": 30.275},
                             //     {"label": "sports", "Average": 48.192, "MNLI": 50.021, "FEVER": 84.583, "RTE": 9.971}
                             //     ]
-                            source: sorted_output,
+                            source: each_model_output,
 
 
                         },
@@ -394,19 +454,16 @@ function update_chart(sorted_output) {
                         yAxis: {
                             type: 'category',
                         },
-                        series: [{type: 'bar'},
-                            {type: 'bar'},
-                            {type: 'bar'},
-                            {type: 'bar'},
-                        {type: 'bar'}]
-                    });
+                        series: [{type: 'bar'}]
+
+                    }, true);
 
 };
 
-function unsort_chart(sorted_output) {
+function sort_chart_all_model(json) {
     var myChart = echarts.init(document.getElementById('result-chart'));
-    console.log('sort function start');
-    console.log(sorted_output);
+    // console.log('sort function start');
+    // console.log(sorted_output);
     myChart.setOption({
                         title: {
                             text: 'Coherency \%',
@@ -428,7 +485,7 @@ function unsort_chart(sorted_output) {
                             containLabel: true
                         },
                         dataset: {
-                            dimensions: ["label",  "MNLI", "FEVER", "RTE", "ESA" , 'Bart-MNLI'],
+                            dimensions: (["label"]).concat(json["models"]),
                             // dimensions: (["label", "Average"]).concat(json["models"]),
 
                             // source: [
@@ -437,7 +494,7 @@ function unsort_chart(sorted_output) {
                             //     {"label": "health", "Average": 40.464, "MNLI": 9.415, "FEVER": 81.701, "RTE": 30.275},
                             //     {"label": "sports", "Average": 48.192, "MNLI": 50.021, "FEVER": 84.583, "RTE": 9.971}
                             //     ]
-                            source: sorted_output,
+                            source: json["sorted_output"],
 
 
                         },
@@ -448,11 +505,7 @@ function unsort_chart(sorted_output) {
                         yAxis: {
                             type: 'category',
                         },
-                        series: [{type: 'bar'},
-                            {type: 'bar'},
-                            {type: 'bar'},
-                            {type: 'bar'},
-                            {type: 'bar'}]
-                    });
+                        series: Array(json["models"].length).fill({type: 'bar'})
+                    }, true);
 
 }

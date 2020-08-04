@@ -758,8 +758,8 @@ def compute_mutiple_labels(premise_str, label_list, model, tokenizer):
     return prob_dic
 
 def loading_bart_model():
-    bart_model = BartForSequenceClassification.from_pretrained('facebook/bart-large-mnli')
-    bart_tokenizer = BartTokenizer.from_pretrained('facebook/bart-large-mnli')
+    bart_model = BartForSequenceClassification.from_pretrained('facebook/bart-large-mnli', output_attention=True)
+    bart_tokenizer = BartTokenizer.from_pretrained('facebook/bart-large-mnli', output_attention=True)
     return bart_model, bart_tokenizer
 
 def comput_bart_single_label(premise, label, bart_model, tokenizer):
@@ -772,8 +772,6 @@ def comput_bart_single_label(premise, label, bart_model, tokenizer):
     # print(x)
     bart_model.to(device)
     logits = bart_model(x.to(device))[0]
-
-
     # we throw away "neutral" (dim 1) and take the probability of
     # "entailment" (2) as the probability of the label being true
     entail_contradiction_logits = logits[:, [0, 2]]
