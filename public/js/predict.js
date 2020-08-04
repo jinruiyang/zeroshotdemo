@@ -196,7 +196,8 @@ function predict(){
             let descriptions =[];
             if (text.length == 0) {
                 alert('Please enter text or select one example!');
-                history.back();
+                // history.back();
+                window.location.reload();
                 return
 
             };
@@ -211,7 +212,8 @@ function predict(){
             });
                         if (labels.length == 0) {
                 alert('Please enter at least one label!');
-                history.back();
+                // history.back();
+                             window.location.reload();
                 return
 
             }
