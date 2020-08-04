@@ -54,15 +54,45 @@ input[type=submit]:hover {
     overflow: auto;
 }
 
+#title-right {
+    margin-right: 20px;  /*间距*/
+    width: 300px;
+    overflow: auto;}
+
+#title-left {
+    margin-left: 20px;
+    flex: 1;  /*均分#parent剩余的部分达到自适应*/
+}
+
+#title-center {
+    margin-left: 50px;  /*间距*/
+    margin-right: 50px;  /*间距*/
+    width: 150px;
+    overflow: auto;
+}
+
 #right {
     margin-right: 20px;  /*间距*/
     width: 300px;
     overflow: auto;}
 
+
 #button-parent {
-    height: 80px;
+    /*height: 40px;*/
     display: flex;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
+
+#title-parent {
+    font-size: 18px;
+    /*height: 40px;*/
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #737373;
+}
+
  #button-left {
     margin-left: 20px;
     /*flex: 1;  !*均分#parent剩余的部分达到自适应*!*/

@@ -255,7 +255,7 @@ function predict(){
             {label: 'heh', 'MNLI': 72.4, 'FEVER': 53.9, 'RTE': 39.1}
         ];
 
-            document.getElementById('result-chart').style = "width: 800px; height: 400px;";
+            document.getElementById('result-chart').style = "width: 800px; height: 400px; margin-left:10px";
 
             var myChart = echarts.init(document.getElementById('result-chart'));
             // Creating a XHR object
