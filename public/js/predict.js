@@ -175,7 +175,7 @@ $("#buttonText").on('click', 'a', function (event) {
 });
 
 function showModelDropDown(arr) {
-    var HTMLString = '<div class="dropdown" > <button class="btn" >Models <i class="fa fa-caret-down"></i> </button> <div class="dropdown-content" id="buttonModel">';
+    var HTMLString = '<div class="dropdown" > <button class="btn" >Sort by <i class="fa fa-caret-down"></i> </button> <div class="dropdown-content" id="buttonModel">';
         arr.forEach(function (item) {
             HTMLString += '<a href="#">' +item+ '</a>';
         });
