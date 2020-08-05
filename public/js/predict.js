@@ -43,6 +43,13 @@ var examples ={
 
 var empty_list = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
 
+var color_dic = {
+    "MNLI": '#D06869',
+    "FEVER": '#63727B',
+    "RTE": '#7EB1B6',
+    "ESA": '#DD9B89',
+    "Bart-MNLI": '#A2CFBC'
+};
 
 $("#btn1").click(function () {
     predict();
@@ -168,7 +175,7 @@ $("#buttonText").on('click', 'a', function (event) {
 });
 
 function showModelDropDown(arr) {
-    var HTMLString = '<div class="dropdown"> <button class="btn" style="border-left:1px solid navy">Models <i class="fa fa-caret-down"></i> </button> <div class="dropdown-content" id="buttonModel">';
+    var HTMLString = '<div class="dropdown" > <button class="btn" >Models <i class="fa fa-caret-down"></i> </button> <div class="dropdown-content" id="buttonModel">';
         arr.forEach(function (item) {
             HTMLString += '<a href="#">' +item+ '</a>';
         });
@@ -329,6 +336,9 @@ function predict(){
                             bottom: '3%',
                             containLabel: true
                         },
+
+                        color: getColorList(json['models']),
+
                         dataset: {
                             // dimensions: ["label", "MNLI", "FEVER", "RTE", "ESA", 'Bart-MNLI'],
                             dimensions: (["label"]).concat(json["models"]),
@@ -393,6 +403,14 @@ function sort_each_model(sorted_output, model) {
     return each_model_output
 }
 
+function getColorList(model_arr) {
+    color_list = [];
+    model_arr.forEach(function (item) {
+        color = color_dic[item];
+        color_list.push(color)
+    });
+    return color_list
+}
 
 function dynamicSort(property) {
     var sortOrder = 1;
@@ -417,7 +435,7 @@ function update_chart_each_model(sorted_output, model) {
     console.log(each_model_output);
     myChart.setOption({
                         title: {
-                            text: 'Confidence \%',
+                            text: 'Coherency %',
                             subtext: ''
                         },
                         tooltip: {
@@ -435,6 +453,8 @@ function update_chart_each_model(sorted_output, model) {
                             bottom: '3%',
                             containLabel: true
                         },
+                        color: [color_dic[model]],
+
                         dataset: {
                             dimensions: ["label",  model],
                             // dimensions: (["label", "Average"]).concat(json["models"]),
@@ -486,6 +506,7 @@ function sort_chart_all_model(json) {
                             bottom: '3%',
                             containLabel: true
                         },
+                        color: getColorList(json['models']),
                         dataset: {
                             dimensions: (["label"]).concat(json["models"]),
                             // dimensions: (["label", "Average"]).concat(json["models"]),

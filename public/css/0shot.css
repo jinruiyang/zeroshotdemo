@@ -80,8 +80,8 @@ input[type=submit]:hover {
 #button-parent {
     /*height: 40px;*/
     display: flex;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    /*margin-top: 10px;*/
+    /*margin-bottom: 10px;*/
 }
 
 #title-parent {
@@ -333,30 +333,85 @@ input[type=submit]:hover {
     margin-left: 8px;
 }
 
-.model-dropdown-content a {
-    color: black;
-    padding: 10px 10px;
-    text-decoration: none;
-    text-decoration-line: none;
-    text-decoration-style: initial;
-    text-decoration-color: initial;
-    display: block;
+/* The container <div> - needed to position the dropdown content */
+.example-dropdown {
+  position: absolute;
+  display: inline-block;
+    float: right;
 }
 
-.model-dropdown-content {
-    background-clip: padding-box;
+/* Dropdown Content (Hidden by Default) */
+.example-dropdown-content {
+        background-clip: padding-box;
     border: 1px solid #ccc;
     border: 1px solid rgba(0,0,0,.15);
     border-radius: 4px;
     right: 60px;
-    /* left: auto; */
-    display: none;
-    position: absolute;
-    background-color: #fff;
-    min-width: 120px;
-    z-index: 1;
+    left: auto;
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  min-width: 120px;
+  z-index: 1;
     overflow: hidden;
-    /* padding: 8px; */
-    /* height: 200px; */
-    align-content: center;
+}
+
+/* Links inside the dropdown */
+.example-dropdown-content a {
+  color: black;
+  padding: 10px 10px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.example-dropdown-content a:hover {background-color: #ddd}
+
+/* Show the dropdown menu on hover */
+.example-dropdown:hover .dexample-dropdown-content {
+  display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.btn:hover, .example-dropdown:hover .example-btn  {
+  background-color: #548BC5;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.example-btn:hover, .example-dropdown:hover .example-btn  {
+  background-color: #548BC5;
+}
+        .checkbox-inline {
+            font-size: 18px
+        }
+.button-left intro-text {
+    width: 20px;
+    margin-right: auto;
+
+}
+
+.example-btn {
+  border: none; /* Remove borders */
+  color: white; /* Add a text color */
+  padding: 12px 20px; /* Add some padding */
+  cursor: pointer; /* Add a pointer cursor on mouse-over */
+}
+
+.success {background-color: #4CAF50;} /* Green */
+.success:hover {background-color: #46a049;}
+
+.info {background-color: #2196F3; border-radius: 4px;} /* Blue */
+.info:hover {background: #0b7dda;}
+.example-btn {
+        color: #fff;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+  /*background-color: #548BC5;*/
+  /*color: white;*/
+  padding: 8px;
+  font-size: 16px;
+  outline: none;
+    border-radius: 4px;
+    width: 120px;
+    margin-left: -180px;
 }

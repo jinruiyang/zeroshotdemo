@@ -48,7 +48,6 @@ class StringPredicter(object):
             "text": data["text"],
             "models": data["models"],
             "labels": data["labels"],
-            "unsorted_output": [],
             "sorted_output": [],
         }
         for idx,label in enumerate(data["labels"]):
@@ -73,9 +72,8 @@ class StringPredicter(object):
                             each_label_result[model_name] = round((100. * comput_bart_single_label(data['text'], label,bart_model, bart_tokenizer)), 4)
                             each_label_result['Sum'] += each_label_result[model_name]
                     # each_label_result_with_ave['Average'] = round((each_label_result_with_ave['Average'] / len(data["models"])),3 )
-                    result["unsorted_output"].append(each_label_result)
-        result["unsorted_output"] = result["unsorted_output"][::-1]
-        result["sorted_output"] = sorted(result["unsorted_output"], key= lambda i: i['Sum'])
+                    result["sorted_output"].append(each_label_result)
+        result["sorted_output"] = sorted(result["sorted_output"], key= lambda i: i['Sum'])
         # print("{}Labels, {}Models, Response time:{:0.4f}s".format(len(data["labels"]), len(data["models"]), (time.time() - start_time)))
         # print(result)
         return result
