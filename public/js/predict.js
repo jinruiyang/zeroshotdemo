@@ -27,7 +27,7 @@ var examples ={
 
     "Expert: Speed vs Safety in Vaccine Race": {
         "text": "Vaccine research expert Dr. Ishii Ken discusses Oxford University's latest findings, plus ongoing coronavirus vaccine efforts around the world and the need to balance speed with safety in the vaccine race.",
-        "labels": ["plague","technology", "music", "", "", "", "","", "", "", "", "", "", "", "", "", "", "", "", "","" ],
+        "labels": ["plague","technology", "music", "", "", "", "","", "", "", "", "", "", "", "", "", "", "", "", "" ],
         "descriptitons": ["Covid-19 | Coronaviruses are a group of related RNA viruses.", "medical", "", "", "", "","", "", "", "", "", "", "", "", "", "", "", "", "", ""]
     },
     "Getting serious about gaming disorder": {
@@ -175,11 +175,11 @@ $("#buttonText").on('click', 'a', function (event) {
 });
 
 function showModelDropDown(arr) {
-    var HTMLString = '<div class="dropdown" > <button class="btn" >Sort by <i class="fa fa-caret-down"></i> </button> <div class="dropdown-content" id="buttonModel">';
+    var HTMLString = '<div class="dropdown" style="margin-top: 0px" > <button class="btn" href="###">Sort by <i class="fa fa-caret-down"></i> </button> <div class="dropdown-content" id="buttonModel">';
         arr.forEach(function (item) {
-            HTMLString += '<a href="#">' +item+ '</a>';
+            HTMLString += '<a href="###">' +item+ '</a>';
         });
-        HTMLString += '<a href="#">All Models</a>';
+        HTMLString += '<a href="###">All Models</a>';
     HTMLString +=  '</div> </div>';
 
 
@@ -297,23 +297,29 @@ function predict(){
                     // console.log("start charting");
                     // console.log(dimensions);
                     myChart.hideLoading();
-                     $("#result-header").html(
-                         '<div>'
+                     $("#result-table").html(
+                        '<div>'
+                         + '<div style="margin-top: -30px">'
                          + showModelDropDown(json['models'])
-                         +'</div>'
-                         + '<div><h3>Notes:</h3></div>'
-                         +'<div><p>1. The scores (0~100%) show coherency between the labels and text. The five models were pretrained on different datasets, so they may predict different scores for the same label. The labels are sorted based on the sum of the scores for all models. </p></div>'
-                         // +'<div><p>2. The dash means that model was not selected. Please scroll back up to select and classify again if needed. </p></div>'
-
-                         +'<div><p>2. Please click the squares in the top of the chart to display specific models in the output, or to remove models you did not select.  </p></div>'
-                         +'<div><p>3. Please use the dropdown list to sort labels by specific model if needed.  </p> </div>'
-
+                            +'</div>'
+                         + drawTable(fillTable(creatTableData(json)))
                          //  + '<ul>'
                         //  + '<div><button id="btn3" style="border-radius: 2px; width: 80px;  background-color: white;color: black; border: solid 1px black;padding: 6px; border-radius: 4px; display: inline-block">MNLI</button></div>'
                         //  + '<div><button id="btn4" style="border-radius: 2px; width: 80px;  background-color: white;color: black; border: solid 1px black;padding: 6px; border-radius: 4px;  margin-left: 10px; display: inline-block">FEVER</button></div></div>'
                         // + '<div><button id="btn5" style="border-radius: 2px; width: 80px; background-color: white;color: black; border: solid 1px black;padding: 6px; border-radius: 4px;  margin-left: 10px; display: inline-block">RTE</button></div></ul>'
-
+                        + '</div>'
                      );
+                     $("#result-note").html(
+                         '<div>'
+                         + '<div><h4>Notes:</h4></div>'
+                         +'<div><p>1. The scores (0~100%) show coherency between the labels and text. The five models were pretrained on different datasets, so they may predict different scores for the same label.  </p></div>'
+                         // +'<div><p>2. The dash means that model was not selected. Please scroll back up to select and classify again if needed. </p></div>'
+
+                         +'<div><p>2. Please click the squares in the top of the chart to display specific models in the output, or to remove models you did not select.  </p></div>'
+                         +'<div><p>3. Please use the dropdown list to sort labels by specific model or the sum of all models if needed.  </p> </div>'
+                            + '</div>'
+                );
+
 
                          // +'<div><p>4. This demo is running on CPU server, it may take a few seconds to get results.  </p></div>');
                     myChart.setOption({
@@ -392,7 +398,7 @@ function sort_each_model(sorted_output, model) {
     each_model_output = [];
 
     for (var i=0; i < sorted_output.length; i++) {
-            temp_obj = {};
+            var temp_obj = {};
             temp_obj['label'] = sorted_output[i]['label'];
             temp_obj[model] =  sorted_output[i][model];
             each_model_output.push(temp_obj);
@@ -401,6 +407,32 @@ function sort_each_model(sorted_output, model) {
         // console.log('before sorting', each_model_output);
         each_model_output.sort(dynamicSort(model));
     return each_model_output
+};
+
+function creatTableData(json) {
+    tableList = [
+        json["models"],
+        Array(json["models"].length).fill("None"),
+        Array(json["models"].length).fill("None"),
+        Array(json["models"].length).fill("None"),
+        Array(json["models"].length).fill("None"),
+        Array(json["models"].length).fill("None"),
+    ];
+
+    sorted_output = json["sorted_output"];
+    for (var i=0; i < json["models"].length; i++) {
+            model = json["models"][i];
+            console.log(model);
+            var each_sorted_output = [];
+            each_sorted_output = sort_each_model(sorted_output, model).reverse();
+            console.log(each_sorted_output);
+            for (var j=0; j < 5 && j < each_sorted_output.length; j++) {
+                console.log(each_sorted_output[j]);
+                tableList[j + 1][i] = each_sorted_output[j]['label'];
+            };
+    };
+
+    return tableList
 }
 
 function getColorList(model_arr) {
@@ -531,4 +563,46 @@ function sort_chart_all_model(json) {
                         series: Array(json["models"].length).fill({type: 'bar'})
                     }, true);
 
+}
+
+function drawTable(tableContentString) {
+    tableHTMLString = '';
+    tableHTMLString = '<h4>Top 5 lables for each model</h4><table> ' +
+         tableContentString
+
+        '</table>';
+    return tableHTMLString
+};
+
+reuslut_chart = [
+            {label: 'sadness', 'MNLI': 31, 'FEVER': 85.8, 'RTE': 93.7},
+            {label: 'happy', 'MNLI': 83.1, 'FEVER': 73.4, 'RTE': 55.1},
+            {label: 'sports', 'MNLI': 86.4, 'FEVER': 65.2, 'RTE': 82.5},
+            {label: 'health', 'MNLI': 72.4, 'FEVER': 53.9, 'RTE': 39.1},
+            {label: '123', 'MNLI': 43.3, 'FEVER': 85.8, 'RTE': 93.7},
+            {label: '4', 'MNLI': 83.1, 'FEVER': 73.4, 'RTE': 55.1},
+            {label: 's', 'MNLI': 86.4, 'FEVER': 65.2, 'RTE': 82.5},
+            {label: 'heh', 'MNLI': 72.4, 'FEVER': 53.9, 'RTE': 39.1}
+        ];
+
+
+
+function fillTable(tableList) {
+    tableContentString = '';
+    tableContentString = tableContentString + '<tr>';
+    tableList[0].forEach(function (item) {
+        tableContentString = tableContentString + '<th>' + item + '</th>';
+    });
+    tableContentString = tableContentString + '</tr>';
+
+    for (var i=1; i < tableList.length; i++) {
+        tableContentString = tableContentString + '<tr>';
+        tableList[i].forEach(function (item) {
+        tableContentString = tableContentString + '<td>' + item + '</td>';
+    });
+    tableContentString = tableContentString + '</tr>';
+    }
+
+
+    return tableContentString
 }
