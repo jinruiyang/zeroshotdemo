@@ -54,7 +54,7 @@ class StringPredicter(object):
             if label != None:
                 each_label_result = {"label": label, 'Sum': 0.}
                 if idx < len(data["descriptions"]) and data["descriptions"][idx] != None: #means user added descriptions
-                    each_label_result['label'] = label + '+' + '{}...'.format(data["descriptions"][idx][:15])
+                    each_label_result['label'] = label + ' + ' + '{}...'.format(data["descriptions"][idx][:15])
                     label = label + ' | ' + data["descriptions"][idx]
                     result["labels"][idx] = label
                 if label not in result["labels"][:idx]:
@@ -103,5 +103,7 @@ if __name__ == '__main__':
     print("Starting rest service...")
     config = {'server.socket_host': '0.0.0.0'}
     cherrypy.config.update(config)
-    cherrypy.config.update({'server.socket_port': 8081})  #match the port on dickens server
+    # cherrypy.config.update({'server.socket_port': 8081})  #match the port on dickens server                                                                          
+    cherrypy.config.update(
+        {'server.socket_host': 'dickens.seas.upenn.edu', 'server.socket_port': 4007, 'cors.expose.on': True})
     cherrypy.quickstart(StringPredicter(), '/', conf)
