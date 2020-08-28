@@ -754,6 +754,7 @@ def compute_single_label(test_examples, model, tokenizer):
 def compute_mutiple_labels(premise_str, label_list, model, tokenizer):
     prob_dic = {}
     for label in label_list:
+        label = f'This text is about {label}.'
         prob_dic[label] = compute_single_label(premise_str, label, model, tokenizer)
     return prob_dic
 
