@@ -264,7 +264,7 @@ function predict(){
             {label: 'heh', 'MNLI': 72.4, 'FEVER': 53.9, 'RTE': 39.1}
         ];
 
-            document.getElementById('result-chart').style = "width: 800px; height: 400px; margin-left:10px";
+            document.getElementById('result-chart').style = "width: 800px; height: 500px; margin-left:10px";
 
             var myChart = echarts.init(document.getElementById('result-chart'));
             // Creating a XHR object
@@ -323,6 +323,13 @@ function predict(){
 
                          // +'<div><p>4. This demo is running on CPU server, it may take a few seconds to get results.  </p></div>');
                     myChart.setOption({
+                        yAxis: {
+                                type: 'category',
+                                axisLabel :{
+                                interval:0
+                                },
+  // data: ['学生一', '学生二', '学生三', '学生四', '学生五', '学生六', '学生七']
+                                },
                         title: {
                             text: 'Coherency \%',
                             subtext: ''
