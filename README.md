@@ -13,7 +13,7 @@ Note: Please keep eye on just the folder path, not the files path.
 Step 4:
 then in another termianl tab enter, you can Check backend with terminal:
 
-curl -d '{"text":"The fox jumped over the fence, and the fence fell down.","models":["MNLI","FEVER", "RTE", "ESA"],"labels":["Society", "Health", "Sports"]}' -H 'Content-Type: application/json' -X POST http://localhost:8081/predict
+curl -d '{"text":"The fox jumped over the fence, and the fence fell down.","models":["MNLI","FEVER", "RTE", "ESA"],"labels":["Society", "Health", "Sports"], "descriptions":[]}' -H 'Content-Type: application/json' -X POST http://localhost:8081/predict
 
 Step 5:
  
