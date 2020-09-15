@@ -3,7 +3,7 @@ import time
 
 import cherrypy
 from scipy.special import softmax
-from demo import compute_single_label, load_model_to_mem,load_demo_input, comput_bart_single_label, loading_bart_model
+from demo import compute_single_label, load_model_to_mem,load_demo_input, comput_bart_single_label, loading_bart_model, loading_bart_fever_rte_model, compute_bart_fever_rte_single_label
 from ESA import load_ESA_sparse_matrix, load_ESA_word2id, ESA_cosine
 import argparse
 
@@ -22,6 +22,7 @@ parser.add_argument("--ZEROSHOT_RESOURCES",
 args = parser.parse_args()
 global cache
 cache = load_model_to_mem(args.ZEROSHOT_MODELS)
+bart_cache = loading_bart_fever_rte_model(args.ZEROSHOT_MODELS)
 bart_model, bart_tokenizer = loading_bart_model()
 print("Load models succeed")
 ESA_sparse_matrix = load_ESA_sparse_matrix(args.ZEROSHOT_RESOURCES).tocsr()
@@ -60,7 +61,7 @@ class StringPredicter(object):
                 if label not in result["labels"][:idx]:
                     test_examples = load_demo_input(data["text"], label.split(' | '))
                     for model_name in data["models"]:
-                        if model_name in ["MNLI", "FEVER", "RTE"]:
+                        if model_name in ["Bert-MNLI", "Bert-FEVER", "Bert-RTE"]:
                             model = cache[model_name][0]
                             tokenizer = cache[model_name][1]
                             each_label_result[model_name] = round((100. * compute_single_label(test_examples, model, tokenizer)), 4)
@@ -70,6 +71,12 @@ class StringPredicter(object):
                             each_label_result['Sum'] += each_label_result[model_name]
                         if model_name == "Bart-MNLI":
                             each_label_result[model_name] = round((100. * comput_bart_single_label(data['text'], label,bart_model, bart_tokenizer)), 4)
+                            each_label_result['Sum'] += each_label_result[model_name]
+                        if model_name in ["Bart-FEVER", "Bart-RTE"]:
+                            model = bart_cache[model_name][0]
+                            tokenizer = bart_cache[model_name][1]
+                            each_label_result[model_name] = round(
+                                (100. * compute_bart_fever_rte_single_label(test_examples, model, tokenizer)), 4)
                             each_label_result['Sum'] += each_label_result[model_name]
                     # each_label_result_with_ave['Average'] = round((each_label_result_with_ave['Average'] / len(data["models"])),3 )
                     result["sorted_output"].append(each_label_result)
@@ -103,7 +110,7 @@ if __name__ == '__main__':
     print("Starting rest service...")
     config = {'server.socket_host': '0.0.0.0'}
     cherrypy.config.update(config)
-    # cherrypy.config.update({'server.socket_port': 8081})  #match the port on dickens server                                                                          
+    # cherrypy.config.update({'server.socket_port': 8081})  #match the port on dickens server
     cherrypy.config.update(
-        {'server.socket_host': 'dickens.seas.upenn.edu', 'server.socket_port': 4007, 'cors.expose.on': True})
+        {'server.socket_host': 'dickens.seas.upenn.edu', 'server.socket_port': 4008, 'cors.expose.on': True})
     cherrypy.quickstart(StringPredicter(), '/', conf)

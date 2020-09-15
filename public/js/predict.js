@@ -44,11 +44,13 @@ var examples ={
 var empty_list = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
 
 var color_dic = {
-    "MNLI": '#D06869',
-    "FEVER": '#63727B',
-    "RTE": '#7EB1B6',
-    "ESA": '#DD9B89',
-    "Bart-MNLI": '#A2CFBC'
+    "Bert-MNLI": '#dd6b66',
+    "Bert-FEVER": '#759aa0',
+    "Bert-RTE": '#e69d87',
+    "ESA": '#8dc1a9',
+    "Bart-MNLI": '#ea7e53',
+    "Bart-FEVER": '#eedd78',
+    "Bart-RTE": '#73a373'
 };
 
 $("#btn1").click(function () {
@@ -424,6 +426,8 @@ function creatTableData(json) {
         Array(json["models"].length).fill("None"),
         Array(json["models"].length).fill("None"),
         Array(json["models"].length).fill("None"),
+        Array(json["models"].length).fill("None"),
+        Array(json["models"].length).fill("None"),
     ];
 
     sorted_output = json["sorted_output"];
@@ -433,7 +437,7 @@ function creatTableData(json) {
             var each_sorted_output = [];
             each_sorted_output = sort_each_model(sorted_output, model).reverse();
             console.log(each_sorted_output);
-            for (var j=0; j < 5 && j < each_sorted_output.length; j++) {
+            for (var j=0; j < 7 && j < each_sorted_output.length; j++) {
                 console.log(each_sorted_output[j]);
                 tableList[j + 1][i] = each_sorted_output[j]['label'];
             };
