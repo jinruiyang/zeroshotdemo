@@ -343,8 +343,12 @@ function predict(){
                             }
                         },
                         legend: {
-
+                            show: true,
+　　　　　　                 top:"6%"
                         },
+
+
+
                         grid: {
                             left: '3%',
                             right: '4%',
@@ -488,6 +492,8 @@ function update_chart_each_model(sorted_output, model) {
                             }
                         },
                         legend: {
+                            show: true,
+　　　　　　                 top:"6%"
 
                         },
                         grid: {
@@ -541,6 +547,8 @@ function sort_chart_all_model(json) {
                             }
                         },
                         legend: {
+                            show: true,
+　　　　　　                 top:"6%"
 
                         },
                         grid: {
