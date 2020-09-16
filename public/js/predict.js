@@ -430,8 +430,6 @@ function creatTableData(json) {
         Array(json["models"].length).fill("None"),
         Array(json["models"].length).fill("None"),
         Array(json["models"].length).fill("None"),
-        Array(json["models"].length).fill("None"),
-        Array(json["models"].length).fill("None"),
     ];
 
     sorted_output = json["sorted_output"];
