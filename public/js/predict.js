@@ -441,7 +441,7 @@ function creatTableData(json) {
             var each_sorted_output = [];
             each_sorted_output = sort_each_model(sorted_output, model).reverse();
             console.log(each_sorted_output);
-            for (var j=0; j < 7 && j < each_sorted_output.length; j++) {
+            for (var j=0; j < 5 && j < each_sorted_output.length; j++) {
                 console.log(each_sorted_output[j]);
                 tableList[j + 1][i] = each_sorted_output[j]['label'];
             };
