@@ -44,6 +44,7 @@ var examples ={
 var empty_list = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
 
 var color_dic = {
+    'Bert-Wiki':'#73b9bc',
     "Bert-MNLI": '#dd6b66',
     "Bert-FEVER": '#759aa0',
     "Bert-RTE": '#e69d87',
@@ -52,6 +53,8 @@ var color_dic = {
     "Bart-FEVER": '#eedd78',
     "Bart-RTE": '#73a373'
 };
+
+
 
 $("#btn1").click(function () {
     predict();

@@ -32,8 +32,20 @@ ESA_word2id = load_ESA_word2id(args.ZEROSHOT_RESOURCES)
 class StringPredicter(object):
     @cherrypy.expose
     def index(self):
-
         return open('public/0shot.html')
+
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    @cherrypy.tools.json_in()
+    def info(self, **params):
+        return {"status":"online"}
+
+    @cherrypy.expose
+    # @cherrypy.tools.json_out()
+    # @cherrypy.tools.json_in()
+    def halt(self, **params):
+        # quit()
+        cherrypy.engine.exit()
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
@@ -61,7 +73,7 @@ class StringPredicter(object):
                 if label not in result["labels"][:idx]:
                     test_examples = load_demo_input(data["text"], label.split(' | '))
                     for model_name in data["models"]:
-                        if model_name in ["Bert-MNLI", "Bert-FEVER", "Bert-RTE"]:
+                        if model_name in ["Bert-MNLI", "Bert-FEVER", "Bert-RTE", "Bert-Wiki"]:
                             model = cache[model_name][0]
                             tokenizer = cache[model_name][1]
                             each_label_result[model_name] = round((100. * compute_single_label(test_examples, model, tokenizer)), 4)
@@ -112,5 +124,5 @@ if __name__ == '__main__':
     cherrypy.config.update(config)
     # cherrypy.config.update({'server.socket_port': 8081})  #match the port on dickens server
     cherrypy.config.update(
-        {'server.socket_host': 'dickens.seas.upenn.edu', 'server.socket_port': 4007, 'cors.expose.on': True})
+        {'server.socket_host': 'dickens.seas.upenn.edu', 'server.socket_port': 4009, 'cors.expose.on': True})
     cherrypy.quickstart(StringPredicter(), '/', conf)

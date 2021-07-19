@@ -608,7 +608,7 @@ def load_bart_fever_rte_model(model_name, data_dir):
 
 def load_model_to_mem(data_dir):
     cache = {}
-    for model_name in ["Bert-MNLI", "Bert-FEVER", "Bert-RTE"]:
+    for model_name in ["Bert-MNLI", "Bert-FEVER", "Bert-RTE", "Bert-Wiki"]:
         model, tokenizer = load_model(model_name, data_dir)
         cache[model_name] = (model, tokenizer)
     return cache
