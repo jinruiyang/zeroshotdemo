@@ -18,7 +18,7 @@ Flask==1.1.2
 future==0.18.2
 get==2019.4.13
 idna==2.9
-ipython==7.16.1
+ipython==7.16.3
 ipython-genutils==0.2.0
 itsdangerous==1.1.0
 jaraco.classes==3.1.0
